@@ -1,74 +1,32 @@
-# AAIINS - Applied Artificial Intelligence and Intelligent Systems Lab
+# AAIINS Lab Website
 
-A modern, responsive website for the Applied Artificial Intelligence and Intelligent Systems (AAIINS) Lab.
+This is the official website for the Applied Artificial Intelligence and Intelligent Systems (AAIINS) Lab.
 
-## 🌟 Features
+## Live Website
 
-- **Responsive Design**: Mobile-first design that works on all devices
-- **Modern UI**: Clean, professional interface with smooth animations
-- **Bootstrap Integration**: Built with Bootstrap 5 for consistent styling
-- **Font Awesome Icons**: Beautiful icons throughout the site
-- **Interactive Elements**: Smooth scrolling, hover effects, and animations
+Visit our website at: https://abdu11ahmamun.github.io/aaiins/
 
-## 🚀 Live Website
+## About
 
-Visit our website at: [https://abdu11ahmamun.github.io/aaiins/](https://abdu11ahmamun.github.io/aaiins/)
+The website showcases our research, publications, team members, and provides information about our work in artificial intelligence and intelligent systems. It features a clean, responsive design that works well on all devices.
 
-## 📁 Project Structure
+## Pages
 
-```
-aaiins/
-├── index.html          # Homepage
-├── about.html          # About page
-├── research.html       # Research page
-├── publications.html   # Publications page
-├── people.html         # People page
-├── contact.html        # Contact page
-├── assets/
-│   ├── css/
-│   │   └── style.css   # Custom styles
-│   └── js/
-│       └── script.js   # Custom JavaScript
-└── README.md           # This file
-```
+- Home - Introduction to our lab
+- About - Detailed information about our mission and vision
+- Research - Our current research areas and projects
+- Publications - Academic papers and research outputs
+- People - Our team members and collaborators
+- Contact - How to reach us
 
-## 🎨 Technologies Used
+## Technology
 
-- HTML5
-- CSS3
-- JavaScript
-- Bootstrap 5
-- Font Awesome 6
-- Google Fonts
+Built with HTML, CSS, JavaScript, and Bootstrap for a modern web experience.
 
-## 🔧 Development
+## Development
 
-To run this project locally:
+To view the website locally, simply clone this repository and open `index.html` in your web browser.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Abdu11ahMamun/aaiins.git
-   ```
+## Contact
 
-2. Navigate to the project directory:
-   ```bash
-   cd aaiins
-   ```
-
-3. Open `index.html` in your web browser or serve it using a local web server.
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Abdu11ahMamun/aaiins/issues).
-
-## 📞 Contact
-
-For any questions or inquiries, please visit our [contact page](contact.html) or reach out through our GitHub repository.
-
----
-
-Made with ❤️ by the AAIINS Lab team
+For inquiries about our research or collaboration opportunities, please visit the contact page on our website.

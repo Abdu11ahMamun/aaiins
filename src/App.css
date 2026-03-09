@@ -1,0 +1,10 @@
+@layer components {
+  .app {
+    @apply min-h-screen flex flex-col;
+  }
+
+  .main-content {
+    @apply flex-1 w-full;
+  }
+}
+

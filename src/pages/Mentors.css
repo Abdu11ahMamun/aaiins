@@ -1,0 +1,67 @@
+.mentors-section {
+  padding: 4rem 0;
+}
+
+.mentors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.mentor-card {
+  height: 100%;
+}
+
+.mentor-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mentor-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: rgba(100, 108, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mentor-name {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.mentor-institution {
+  color: #646cff;
+  font-weight: 500;
+}
+
+.mentor-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mentor-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+.mentor-detail svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #646cff;
+}
+
+@media (max-width: 768px) {
+  .mentors-grid {
+    grid-template-columns: 1fr;
+  }
+}

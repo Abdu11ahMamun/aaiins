@@ -1,0 +1,77 @@
+.people-section {
+  padding: 4rem 0;
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.person-card {
+  text-align: center;
+}
+
+.person-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #646cff, #535bf2);
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.person-name {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.person-role {
+  color: #646cff;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.person-specialty {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.person-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.person-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.person-links a:hover {
+  background: rgba(100, 108, 255, 0.2);
+  color: #646cff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .people-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}

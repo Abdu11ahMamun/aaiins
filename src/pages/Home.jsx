@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Eye, Brain, Wand2, HeartPulse, Leaf, Bot } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function Home() {
@@ -40,46 +39,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Impact & Stats Section */}
-      <section className="py-16 pb-24">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <h2 className="text-[2rem] font-[700] tracking-[-0.02em] mb-3 text-white">Our Impact</h2>
-            <p className="max-w-[700px] mx-auto text-[#9fb0c7] text-[1.02rem] leading-[1.7]">
-              Building a global community of researchers pushing the boundaries of intelligent systems.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Brain, num: '30+', label: 'Active Researchers', color: '#bbb8ff', bg: 'from-[#8b8cff]/[0.18] to-[#8b8cff]/[0.06]' },
-              { icon: Eye, num: '12+', label: 'Published Papers', color: '#9cc2ff', bg: 'from-[#68a8ff]/[0.18] to-[#68a8ff]/[0.06]' },
-              { icon: Wand2, num: '20+', label: 'Under Review', color: '#ffd86f', bg: 'from-[#facc15]/[0.18] to-[#facc15]/[0.06]' },
-              { icon: Bot, num: '6', label: 'Research Areas', color: '#36e1c6', bg: 'from-[#36e1c6]/[0.18] to-[#36e1c6]/[0.06]' }
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-6 rounded-[18px] bg-gradient-to-b from-white/[0.08] to-white/[0.05] border border-white/[0.10] text-center group hover:border-white/[0.18] transition-all duration-300"
-              >
-                <div className={`w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br ${stat.bg} border border-white/[0.10] grid place-items-center group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon size={24} style={{ color: stat.color }} />
-                </div>
-                <div className="text-[2.5rem] font-[850] mb-2 text-white">{stat.num}</div>
-                <div className="text-[0.85rem] text-[#9fb0c7] uppercase tracking-[0.1em]">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

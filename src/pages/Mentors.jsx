@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { Crown, ShieldCheck, Mail, Linkedin, BookOpen, Globe } from 'lucide-react';
 
 function Mentors() {
@@ -67,6 +68,8 @@ function Mentors() {
   const supportingMentors = mentors.slice(1);
 
   const MentorCard = ({ mentor, index, featured = false }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     return (
       <motion.article
         initial={{ opacity: 0, y: 22 }}
@@ -74,10 +77,22 @@ function Mentors() {
         viewport={{ once: true }}
         transition={{ duration: 0.55, delay: index * 0.1 }}
         whileHover={{ y: -3 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         className={`group relative ${featured ? 'mx-auto max-w-[1120px]' : ''}`}
       >
         <div className="absolute inset-0 translate-y-[4px] rounded-[26px] bg-black/25 blur-[2px]" />
-        <div className="absolute inset-0 rounded-[26px] border border-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[linear-gradient(#0f1726,#0f1726)_padding-box,linear-gradient(120deg,rgba(56,189,248,0.85),rgba(167,139,250,0.75),rgba(52,211,153,0.85))_border-box]" />
+        <motion.div
+          animate={{
+            opacity: isHovered ? 1 : 0,
+            backgroundPosition: isHovered ? ['0% 50%', '100% 50%', '0% 50%'] : '0% 50%',
+          }}
+          transition={{
+            opacity: { duration: 0.25 },
+            backgroundPosition: { duration: 2.2, ease: 'linear', repeat: isHovered ? Infinity : 0 },
+          }}
+          className="absolute inset-0 rounded-[26px] border border-transparent bg-[linear-gradient(#0f1726,#0f1726)_padding-box,linear-gradient(120deg,rgba(56,189,248,0.95),rgba(167,139,250,0.9),rgba(52,211,153,0.95),rgba(56,189,248,0.95))_border-box] bg-[length:220%_220%]"
+        />
 
         <div
           className={`relative rounded-[26px] border border-white/[0.12] bg-[#0f1726]/95 p-6 backdrop-blur-[14px] ${

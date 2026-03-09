@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, HourglassIcon, FileText, Github, Quote, Search, Filter, X, Calendar, BookOpen, Sparkles } from 'lucide-react';
+import { CheckCircle2, HourglassIcon, Search, Filter, X, Calendar, BookOpen, Sparkles, ExternalLink } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 function Publications() {
@@ -10,12 +10,49 @@ function Publications() {
 
   const publishedPapers = [
     {
+      title: 'HANS-Net: Hyperbolic convolution and adaptive temporal attention for accurate and generalizable liver and tumor segmentation in CT imaging',
+      authors: 'Abian, A. I., Debnath, R. K., Rahman, M. A., et al.',
+      year: '2025',
+      journal: 'IEEE Transactions on Radiation and Plasma Medical Sciences',
+      status: 'published',
+      tags: ['Healthcare', 'Segmentation', 'CT Imaging'],
+      url: 'https://ieeexplore.ieee.org/abstract/document/11355697'
+    },
+    {
       title: 'Atrous spatial pyramid pooling with Swin Transformer model for classification of gastrointestinal tract diseases from videos with enhanced explainability',
       authors: 'Abian, A. I., Raiaan, M. A. K., Jonkman, M., Islam, S. M. S., & Azam, S.',
       year: '2025',
       journal: 'Engineering Applications of Artificial Intelligence',
       status: 'published',
-      tags: ['Computer Vision', 'Deep Learning', 'Healthcare']
+      tags: ['Computer Vision', 'Deep Learning', 'Healthcare'],
+      url: 'https://doi.org/10.1016/j.engappai.2025.110656'
+    },
+    {
+      title: 'Diffusion-based knowledge distillation for effective multi-organ segmentation with reduced computational time',
+      authors: 'Raiaan, M. A. K., Rahman, M. A., Azam, S., Yeo, K. C., Sebastian, Y., and Jonkman, M.',
+      year: '2025',
+      journal: 'Computers in Biology and Medicine',
+      status: 'published',
+      tags: ['Healthcare', 'Segmentation', 'Knowledge Distillation'],
+      url: 'https://doi.org/10.1016/j.compbiomed.2025.111265'
+    },
+    {
+      title: 'Hallucination to Truth: A Review of Fact-Checking and Factuality Evaluation in Large Language Models',
+      authors: 'Rahman, S. S., Islam, M. A., Alam, M. M., et al.',
+      year: '2025',
+      journal: 'Artificial Intelligence Review',
+      status: 'published',
+      tags: ['LLMs', 'Factuality', 'Review'],
+      url: 'https://link.springer.com/article/10.1007/s10462-025-11454-w'
+    },
+    {
+      title: 'From language to action: A review of large language models as autonomous agents and tool users',
+      authors: 'Chowa, S. S., Alvi, R., Rahman, S. S., et al.',
+      year: '2025',
+      journal: 'Artificial Intelligence Review',
+      status: 'published',
+      tags: ['LLMs', 'Agents', 'Review'],
+      url: 'https://link.springer.com/article/10.1007/s10462-025-11471-9'
     },
     {
       title: 'Advancing skin cancer detection integrating a novel unsupervised classification and enhanced imaging techniques',
@@ -23,7 +60,8 @@ function Publications() {
       year: '2025',
       journal: 'CAAI Transactions on Intelligence Technology, 10(2), 474-493',
       status: 'published',
-      tags: ['Machine Learning', 'Healthcare', 'Image Processing']
+      tags: ['Machine Learning', 'Healthcare', 'Image Processing'],
+      url: 'https://doi.org/10.1049/cit2.12410'
     },
     {
       title: 'Comprehensive review of the material life cycle and sustainability of solar photovoltaic panels',
@@ -31,7 +69,8 @@ function Publications() {
       year: '2025',
       journal: 'Solar Energy',
       status: 'published',
-      tags: ['Environmental Modelling', 'Sustainability']
+      tags: ['Environmental Modelling', 'Sustainability'],
+      url: 'https://doi.org/10.1016/j.solener.2025.113927'
     },
     {
       title: 'A lightweight robust deep learning model gained high accuracy in classifying a wide range of diabetic retinopathy images',
@@ -39,7 +78,17 @@ function Publications() {
       year: '2023',
       journal: 'IEEE Access, 11, 42361-42388',
       status: 'published',
-      tags: ['Deep Learning', 'Healthcare', 'Computer Vision']
+      tags: ['Deep Learning', 'Healthcare', 'Computer Vision'],
+      url: 'https://doi.org/10.1109/ACCESS.2023.3272228'
+    },
+    {
+      title: 'Predicting Postresection Colorectal Liver Metastases Recurrence Using Advanced Graph Neural Networks with Explainability and Causal Inference',
+      authors: 'Ahmed, J., Rahman, M. A., Raiaan, M. A. K., and Azam, S.',
+      year: '2025',
+      journal: 'Advanced Intelligent Systems',
+      status: 'published',
+      tags: ['Healthcare', 'Graph Neural Networks', 'Causal Inference'],
+      url: 'https://doi.org/10.1002/aisy.202500596'
     },
     {
       title: 'FSS-ULivR: a clinically inspired few-shot segmentation framework for liver imaging using unified representations and attention mechanisms',
@@ -47,7 +96,8 @@ function Publications() {
       year: '2025',
       journal: 'Journal of Cancer Research and Clinical Oncology, 151(7), 1-23',
       status: 'published',
-      tags: ['Healthcare', 'Segmentation', 'Deep Learning']
+      tags: ['Healthcare', 'Segmentation', 'Deep Learning'],
+      url: 'https://doi.org/10.1007/s00432-025-06256-0'
     },
     {
       title: 'Cervical spine fracture detection utilizing YOLOv8 and deep attention-based vertebrae classification ensuring XAI',
@@ -55,7 +105,8 @@ function Publications() {
       year: '2025',
       journal: 'Biomedical Signal Processing and Control, 101, 107228',
       status: 'published',
-      tags: ['Computer Vision', 'Healthcare', 'XAI']
+      tags: ['Computer Vision', 'Healthcare', 'XAI'],
+      url: 'https://doi.org/10.1016/j.bspc.2024.107228'
     },
     {
       title: 'A computer-aided diagnostic system to identify diabetic retinopathy, utilizing a modified compact convolutional transformer and low-resolution images to reduce computation time',
@@ -63,7 +114,8 @@ function Publications() {
       year: '2023',
       journal: 'Biomedicines, 11(6), 1566',
       status: 'published',
-      tags: ['Healthcare', 'Deep Learning', 'Transformers']
+      tags: ['Healthcare', 'Deep Learning', 'Transformers'],
+      url: 'https://doi.org/10.3390/biomedicines11061566'
     },
     {
       title: 'An Innovative Coverage Path Planning Approach for UAVs to Boost Precision Agriculture and Rescue Operations',
@@ -71,7 +123,8 @@ function Publications() {
       year: '2025',
       journal: 'International Journal of Intelligent Systems, 2025(1), 4700518',
       status: 'published',
-      tags: ['Optimization', 'UAV', 'Agriculture']
+      tags: ['Optimization', 'UAV', 'Agriculture'],
+      url: 'https://doi.org/10.1155/int/4700518'
     },
     {
       title: 'Advanced Biomedical Imaging for Identifying Blood Cell Type: Integrating Segmentation, Feature Extraction, and GraphSage Model',
@@ -79,7 +132,8 @@ function Publications() {
       year: '2025',
       journal: 'Biomedical Engineering Advances, 100174',
       status: 'published',
-      tags: ['Healthcare', 'Graph Neural Networks', 'Computer Vision']
+      tags: ['Healthcare', 'Graph Neural Networks', 'Computer Vision'],
+      url: 'https://doi.org/10.1016/j.bea.2025.100174'
     },
     {
       title: 'A review on large language models: Architectures, applications, taxonomies, open issues, and challenges',
@@ -87,7 +141,8 @@ function Publications() {
       year: '2024',
       journal: 'IEEE Access',
       status: 'published',
-      tags: ['LLMs', 'NLP', 'Review']
+      tags: ['LLMs', 'NLP', 'Review'],
+      url: 'https://doi.org/10.1016/j.bspc.2024.106279'
     },
     {
       title: 'Automated diagnosis of respiratory diseases from lung ultrasound videos ensuring XAI: An innovative hybrid model approach',
@@ -95,7 +150,8 @@ function Publications() {
       year: '2024',
       journal: 'Frontiers in Computer Science',
       status: 'published',
-      tags: ['Healthcare', 'XAI', 'Deep Learning']
+      tags: ['Healthcare', 'XAI', 'Deep Learning'],
+      url: 'https://doi.org/10.3389/fcomp.2024.1438126'
     },
     {
       title: 'Enhancing cervical cancer diagnosis with graph convolution network: AI-powered segmentation, feature analysis, and classification for early detection',
@@ -103,7 +159,17 @@ function Publications() {
       year: '2024',
       journal: 'Multimedia Tools and Applications, 83(30), 75343-75367',
       status: 'published',
-      tags: ['Healthcare', 'Graph Neural Networks', 'Cancer Detection']
+      tags: ['Healthcare', 'Graph Neural Networks', 'Cancer Detection'],
+      url: 'https://doi.org/10.1007/s11042-024-18608-y'
+    },
+    {
+      title: 'A Dual-Stage Framework for Cardiovascular Abnormalities Diagnosis from ECG Signals Using CA-GNN and Semi-Supervised Autoencoders',
+      authors: 'Fahad, N. M., Rahman, M. A., Jakarea, Md., Jonkman, M., & Azam, S.',
+      year: '2025',
+      journal: 'Signal, Image, and Video Processing',
+      status: 'published',
+      tags: ['Healthcare', 'Graph Neural Networks', 'ECG'],
+      url: 'https://link.springer.com/article/10.1007/s11760-025-05042-2'
     }
   ];
 
@@ -114,23 +180,8 @@ function Publications() {
       year: '2025',
       journal: 'IEEE Transactions on Big Data, Manuscript ID: TBD-2025-10-0603',
       status: 'under-review',
-      tags: ['AutoML', 'NAS', 'Biodiversity']
-    },
-    {
-      title: 'Hallucination to Truth: A Review of Fact-Checking and Factuality Evaluation in Large Language Models',
-      authors: 'Rahman, S. S., Islam, M. A., Alam, M. M., et al.',
-      year: '2025',
-      journal: 'Artificial Intelligence Review, Submission ID 50a23270-f0ea-490a-8069-81cd72698607',
-      status: 'under-review',
-      tags: ['LLMs', 'Factuality', 'Review']
-    },
-    {
-      title: 'From language to action: A review of large language models as autonomous agents and tool users',
-      authors: 'Chowa, S. S., Alvi, R., Rahman, S. S., et al.',
-      year: '2025',
-      journal: 'Artificial Intelligence Review, Submission ID e5d7ea95-915d-43aa-81c6-3ceb6b25d5b0',
-      status: 'under-review',
-      tags: ['LLMs', 'Agents', 'Review']
+      tags: ['AutoML', 'NAS', 'Biodiversity'],
+      url: 'https://arxiv.org/abs/2510.05888'
     },
     {
       title: 'Quantitative Measurement of Parkinson Disease Progression Using DaTscan Radiomics and Clinical Features with a Machine Learning Based Approach',
@@ -154,7 +205,8 @@ function Publications() {
       year: '2025',
       journal: 'Expert Systems With Applications (Submission ID: ESWAD-25-24228)',
       status: 'under-review',
-      tags: ['Computer Vision', 'Healthcare', 'Attention']
+      tags: ['Computer Vision', 'Healthcare', 'Attention'],
+      url: 'https://doi.org/10.48550/arXiv.2509.05913'
     },
     {
       title: 'ARIONet: An Advanced Self-supervised Contrastive Representation Network for Birdsong Classification and Future Frame Prediction',
@@ -162,15 +214,8 @@ function Publications() {
       year: '2025',
       journal: 'Applied Acoustics (Submission ID: APAC-D-25-02248)',
       status: 'under-review',
-      tags: ['Self-supervised', 'Audio', 'Biodiversity']
-    },
-    {
-      title: 'HANS-Net: Hyperbolic convolution and adaptive temporal attention for accurate and generalizable liver and tumor segmentation in CT imaging',
-      authors: 'Abian, A. I., Debnath, R. K., Rahman, M. A., et al.',
-      year: '2025',
-      journal: 'IEEE Transactions on Radiation and Plasma Medical Sciences. Manuscript ID: TRPMS-2025-0266',
-      status: 'under-review',
-      tags: ['Healthcare', 'Segmentation', 'Hyperbolic Learning']
+      tags: ['Self-supervised', 'Audio', 'Biodiversity'],
+      url: 'https://doi.org/10.48550/arXiv.2510.00522'
     },
     {
       title: 'A source-free approach for domain adaptation via multiview image transformation and latent space consistency',
@@ -210,7 +255,8 @@ function Publications() {
       year: '2025',
       journal: 'ISPRS Journal of Photogrammetry and Remote Sensing. Manuscript ID: PHOTO-D-25-02551',
       status: 'under-review',
-      tags: ['Remote Sensing', 'Multi-modal', 'LLMs']
+      tags: ['Remote Sensing', 'Multi-modal', 'LLMs'],
+      url: 'https://doi.org/10.48550/arXiv.2509.11952'
     },
     {
       title: 'MO-SA: An Optimized Multi Objective Simulated Annealing Approach for Efficient Drone-Based Products Delivery',
@@ -256,9 +302,10 @@ function Publications() {
       title: 'PPORLD-EDNetLDCT: A Proximal Policy Optimization-Based Reinforcement Learning Framework for Adaptive Low-Dose CT Denoising',
       authors: 'Sutradhar, D., Debnath, R. K., Raiaan, M. A. K., et al.',
       year: '2025',
-      journal: 'International Journal of Intelligent Systems, Wiley. Manuscript ID : 3676394',
+      journal: 'International Journal of Intelligent Systems, Wiley. Manuscript ID: 3676394',
       status: 'under-review',
-      tags: ['Healthcare', 'Reinforcement Learning', 'Imaging']
+      tags: ['Healthcare', 'Reinforcement Learning', 'Imaging'],
+      url: 'https://doi.org/10.48550/arXiv.2509.03185'
     }
   ];
 
@@ -347,9 +394,17 @@ function Publications() {
         </div>
 
         {/* Title */}
-        <h3 className="text-[1.1rem] font-[760] leading-[1.5] mb-3 text-white group-hover:text-[#e8eef8] transition-colors duration-300">
-          {paper.title}
-        </h3>
+        {paper.url ? (
+          <a href={paper.url} target="_blank" rel="noreferrer" className="group/title inline-block mb-3">
+            <h3 className="text-[1.1rem] font-[760] leading-[1.5] text-white transition-colors duration-300 group-hover/title:text-[#9cc2ff]">
+              {paper.title}
+            </h3>
+          </a>
+        ) : (
+          <h3 className="text-[1.1rem] font-[760] leading-[1.5] mb-3 text-white group-hover:text-[#e8eef8] transition-colors duration-300">
+            {paper.title}
+          </h3>
+        )}
 
         {/* Authors */}
         <p className="text-[0.9rem] text-[#9fb0c7] mb-2 leading-[1.6]">
@@ -378,34 +433,23 @@ function Publications() {
 
         {/* Action buttons */}
         <div className="flex gap-2.5 flex-wrap pt-3 border-t border-white/[0.08]">
-          <motion.button
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[12px] border border-[#68a8ff]/[0.25] bg-[#68a8ff]/[0.08] text-[#9cc2ff] text-[0.85rem] font-bold transition-all duration-300 hover:bg-[#68a8ff]/[0.15] hover:border-[#68a8ff]/[0.35] hover:shadow-[0_4px_16px_rgba(104,168,255,0.2)]"
-          >
-            <FileText size={15} />
-            PDF
-          </motion.button>
-          
-          {paper.status === 'published' && (
-            <motion.button
+          {paper.url ? (
+            <motion.a
+              href={paper.url}
+              target="_blank"
+              rel="noreferrer"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[12px] border border-[#36e1c6]/[0.25] bg-[#36e1c6]/[0.08] text-[#36e1c6] text-[0.85rem] font-bold transition-all duration-300 hover:bg-[#36e1c6]/[0.15] hover:border-[#36e1c6]/[0.35] hover:shadow-[0_4px_16px_rgba(54,225,198,0.2)]"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[12px] border border-[#68a8ff]/[0.25] bg-[#68a8ff]/[0.08] text-[#9cc2ff] text-[0.85rem] font-bold transition-all duration-300 hover:bg-[#68a8ff]/[0.15] hover:border-[#68a8ff]/[0.35] hover:shadow-[0_4px_16px_rgba(104,168,255,0.2)]"
             >
-              <Github size={15} />
-              Code
-            </motion.button>
+              <ExternalLink size={15} />
+              View Paper
+            </motion.a>
+          ) : (
+            <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[12px] border border-white/[0.12] bg-white/[0.05] text-[#9fb0c7] text-[0.85rem] font-bold">
+              Link Not Public Yet
+            </span>
           )}
-          
-          <motion.button
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[12px] border border-white/[0.15] bg-white/[0.06] text-white text-[0.85rem] font-bold transition-all duration-300 hover:bg-white/[0.10] hover:border-white/[0.25]"
-          >
-            <Quote size={15} />
-            Cite
-          </motion.button>
         </div>
       </div>
 

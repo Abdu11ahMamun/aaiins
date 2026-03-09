@@ -29,6 +29,7 @@ function Mentors() {
       title: 'PhD Student',
       department: 'Department of Data Science and AI',
       institution: 'Monash University, Australia',
+      bio: '',
       image: getImage('Mohaimenul Azam Khan Raiaan.jpg') || getImage('mak-raian.jpg'),
       links: {
         email: 'mailto:mohaimenul.raiaan@monash.edu',
@@ -47,6 +48,7 @@ function Mentors() {
       title: 'PhD Student',
       department: 'Department of Software Systems & Cybersecurity',
       institution: 'Monash University, Australia',
+      bio: '',
       image: getImage('Chowa-scaled.jpg'),
       links: {
         email: 'mailto:sadia15-3052@diu.edu.bd',
@@ -65,58 +67,54 @@ function Mentors() {
   const supportingMentors = mentors.slice(1);
 
   const MentorCard = ({ mentor, index, featured = false }) => {
-    const Icon = mentor.icon;
-
     return (
       <motion.article
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.55, delay: index * 0.1 }}
-        whileHover={{ y: -4, rotateX: 1.5, rotateY: -1.5 }}
-        style={{ transformPerspective: 1200 }}
-        className="group relative"
+        whileHover={{ y: -3 }}
+        className={`group relative ${featured ? 'mx-auto max-w-[1120px]' : ''}`}
       >
-        <div className="absolute inset-0 translate-y-[5px] rounded-[26px] bg-black/30 blur-[2px]" />
-        <div className={`absolute -inset-[1px] rounded-[26px] bg-gradient-to-r ${mentor.gradient} opacity-[0.24]`} />
+        <div className="absolute inset-0 translate-y-[4px] rounded-[26px] bg-black/25 blur-[2px]" />
+        <div className="absolute inset-0 rounded-[26px] border border-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[linear-gradient(#0f1726,#0f1726)_padding-box,linear-gradient(120deg,rgba(56,189,248,0.85),rgba(167,139,250,0.75),rgba(52,211,153,0.85))_border-box]" />
 
         <div
           className={`relative rounded-[26px] border border-white/[0.12] bg-[#0f1726]/95 p-6 backdrop-blur-[14px] ${
-            featured ? 'lg:p-8' : ''
+            featured ? 'lg:p-10' : ''
           }`}
         >
-          <div className="absolute inset-0 rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.01))]" />
+          <div className="absolute inset-0 rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.01))]" />
 
-          <div className={`relative ${featured ? 'lg:flex lg:items-start lg:gap-8' : ''}`}>
-            <div className="flex flex-col items-center lg:items-start">
-              <div
-                className={`overflow-hidden rounded-[16px] border border-white/[0.14] bg-gradient-to-br ${mentor.gradient} shadow-[0_8px_22px_rgba(0,0,0,0.3)] ${
-                  featured ? 'h-44 w-44 lg:h-48 lg:w-48' : 'h-32 w-32 lg:h-36 lg:w-36'
-                }`}
-              >
-                {mentor.image ? (
-                  <img src={mentor.image} alt={mentor.name} className="h-full w-full object-cover object-top" />
-                ) : (
-                  <div className="grid h-full w-full place-items-center text-2xl font-black text-white">{mentor.initials}</div>
-                )}
-              </div>
-
-              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/[0.14] bg-white/[0.04] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.1em] text-[#d6e2f2]">
-                <Icon size={13} style={{ color: mentor.accent }} />
-                {mentor.tier}
-              </div>
+          <div className="relative flex flex-col items-center text-center">
+            <div
+              className={`overflow-hidden rounded-[18px] border border-white/[0.16] bg-gradient-to-br ${mentor.gradient} shadow-[0_8px_22px_rgba(0,0,0,0.3)] ${
+                featured ? 'h-56 w-56 lg:h-64 lg:w-64' : 'h-40 w-40 lg:h-44 lg:w-44'
+              }`}
+            >
+              {mentor.image ? (
+                <img src={mentor.image} alt={mentor.name} className="h-full w-full object-cover object-top" />
+              ) : (
+                <div className="grid h-full w-full place-items-center text-2xl font-black text-white">{mentor.initials}</div>
+              )}
             </div>
 
-            <div className={`mt-5 ${featured ? 'lg:mt-0 flex-1' : ''}`}>
-              <h3 className={`${featured ? 'text-[1.9rem]' : 'text-[1.35rem]'} text-center font-[850] tracking-[-0.03em] lg:text-left`}>
+            <div className="mt-6 max-w-[860px]">
+              <h3 className={`${featured ? 'text-[2.15rem]' : 'text-[1.35rem]'} font-[850] tracking-[-0.03em]`}>
                 {mentor.name}
               </h3>
 
-              <p className="mt-2 text-center text-[0.95rem] font-semibold text-[#c7d3e2] lg:text-left">{mentor.title}</p>
-              <p className="mt-1 text-center text-[0.9rem] font-medium text-[#9fb0c7] lg:text-left">{mentor.department}</p>
-              <p className="mt-1 text-center text-[0.9rem] text-[#8ea2bb] lg:text-left">{mentor.institution}</p>
+              <p className="mt-2 text-[1rem] font-semibold text-[#c7d3e2]">{mentor.title}</p>
+              <p className="mt-1 text-[0.95rem] font-medium text-[#9fb0c7]">{mentor.department}</p>
+              <p className="mt-1 text-[0.95rem] text-[#8ea2bb]">{mentor.institution}</p>
 
-              <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
+              {featured && mentor.bio && (
+                <p className="mt-4 rounded-[14px] border border-white/[0.10] bg-white/[0.03] px-4 py-3 text-[0.98rem] leading-[1.75] text-[#cdd8e8]">
+                  {mentor.bio}
+                </p>
+              )}
+
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {mentor.links.email && (
                   <a
                     href={mentor.links.email}
@@ -173,32 +171,47 @@ function Mentors() {
 
   return (
     <div className="relative z-[1] min-h-screen pt-[72px]">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden opacity-40">
+        <motion.div
+          animate={{ x: [0, 70, 0], y: [0, -45, 0], scale: [1, 1.08, 1] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute left-[6%] top-[12%] h-[320px] w-[320px] rounded-full bg-sky-400/20 blur-[90px]"
+        />
+        <motion.div
+          animate={{ x: [0, -60, 0], y: [0, 50, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-[8%] right-[8%] h-[360px] w-[360px] rounded-full bg-emerald-400/20 blur-[100px]"
+        />
+      </div>
+
       <div className="relative py-16 pb-8">
         <div className="mx-auto max-w-[1280px] px-6">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="rounded-[20px] border border-white/[0.12] bg-gradient-to-b from-white/[0.08] to-white/[0.04] p-8 text-center"
+            className="rounded-[24px] border border-white/[0.14] bg-gradient-to-br from-white/[0.11] via-white/[0.06] to-white/[0.03] p-9 text-center shadow-[0_18px_44px_rgba(0,0,0,0.25)]"
           >
-            <h1 className="mb-3 text-[clamp(2rem,4vw,3rem)] font-[850] tracking-[-0.035em] text-white">Mentors</h1>
-            <p className="mx-auto max-w-[820px] text-[1.02rem] leading-[1.8] text-[#a8b9ce]">
-              Academic leadership and senior researchers guiding the strategic and scholarly direction of AIINS Lab.
-            </p>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.16] bg-white/[0.05] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#c9d5e7]">
+              Executive Academic Panel
+            </div>
+            <h1 className="text-[clamp(2.2rem,4.5vw,3.3rem)] font-[900] tracking-[-0.04em] text-transparent bg-gradient-to-r from-[#e2e8f0] via-[#bae6fd] to-[#99f6e4] bg-clip-text">
+              Mentors
+            </h1>
           </motion.div>
         </div>
       </div>
 
       <section className="py-8 pb-20">
         <div className="mx-auto max-w-[1280px] px-6">
-          <div className="mb-7 flex items-center justify-center gap-2">
+          <div className="mb-7 flex items-center justify-center gap-2 rounded-[16px] border border-white/[0.10] bg-white/[0.03] py-3">
             <Crown className="text-[#cbd5e1]" size={28} />
             <h2 className="text-[2rem] font-[850] tracking-[-0.03em]">Chief Mentor</h2>
           </div>
 
           <MentorCard mentor={featuredMentor} index={0} featured />
 
-          <div className="mb-7 mt-14 flex items-center justify-center gap-2">
+          <div className="mb-7 mt-14 flex items-center justify-center gap-2 rounded-[16px] border border-white/[0.10] bg-white/[0.03] py-3">
             <ShieldCheck className="text-[#7dd3fc]" size={26} />
             <h2 className="text-[2rem] font-[850] tracking-[-0.03em]">Senior Mentors</h2>
           </div>

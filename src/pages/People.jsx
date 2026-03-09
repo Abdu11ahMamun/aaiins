@@ -420,7 +420,7 @@ function People() {
             }}
             transition={{ duration: 0.3 }}
             className={`${
-              size === 'large' ? 'w-32 h-32 text-4xl mb-6' : 'w-20 h-20 text-2xl mb-4'
+              size === 'large' ? 'w-40 h-40 text-4xl mb-6' : 'w-26 h-26 text-2xl mb-4'
             } rounded-[18px] bg-gradient-to-br ${gradient} flex items-center justify-center font-bold shadow-xl relative overflow-hidden mx-auto`}
             style={{ transformStyle: 'preserve-3d', transform: 'translateZ(30px)' }}
           >

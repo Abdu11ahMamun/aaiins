@@ -84,17 +84,17 @@ function Mentors() {
         <div className="absolute inset-0 translate-y-[4px] rounded-[26px] bg-black/25 blur-[2px]" />
         <motion.div
           animate={{
-            opacity: isHovered ? 1 : 0,
-            backgroundPosition: isHovered ? ['0% 50%', '100% 50%', '0% 50%'] : '0% 50%',
+            borderColor: isHovered
+              ? ['rgba(56,189,248,0.95)', 'rgba(167,139,250,0.95)', 'rgba(52,211,153,0.95)', 'rgba(56,189,248,0.95)']
+              : 'rgba(255,255,255,0.12)',
+            boxShadow: isHovered
+              ? ['0 0 0 1px rgba(56,189,248,0.35)', '0 0 0 1px rgba(167,139,250,0.35)', '0 0 0 1px rgba(52,211,153,0.35)', '0 0 0 1px rgba(56,189,248,0.35)']
+              : '0 0 0 0px rgba(0,0,0,0)',
           }}
           transition={{
-            opacity: { duration: 0.25 },
-            backgroundPosition: { duration: 2.2, ease: 'linear', repeat: isHovered ? Infinity : 0 },
+            borderColor: { duration: 1.8, ease: 'linear', repeat: isHovered ? Infinity : 0 },
+            boxShadow: { duration: 1.8, ease: 'linear', repeat: isHovered ? Infinity : 0 },
           }}
-          className="absolute inset-0 rounded-[26px] border border-transparent bg-[linear-gradient(#0f1726,#0f1726)_padding-box,linear-gradient(120deg,rgba(56,189,248,0.95),rgba(167,139,250,0.9),rgba(52,211,153,0.95),rgba(56,189,248,0.95))_border-box] bg-[length:220%_220%]"
-        />
-
-        <div
           className={`relative rounded-[26px] border border-white/[0.12] bg-[#0f1726]/95 p-6 backdrop-blur-[14px] ${
             featured ? 'lg:p-10' : ''
           }`}
@@ -179,7 +179,7 @@ function Mentors() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </motion.article>
     );
   };

@@ -18,8 +18,36 @@ const MENTORS_CHIEF = {
 };
 
 const MENTORS_SENIOR = [
-  { name: 'Mohaimenul Azam Khan Raiaan', role: 'Senior Mentor', title: 'PhD Student', dept: 'Department of Data Science and AI', inst: 'Monash University, Australia', image: getImage('mak-raian.jpg'), links: { email: 'mailto:mohaimenul.raiaan@monash.edu', linkedin: 'https://www.linkedin.com/in/makraiaan/', scholar: 'https://scholar.google.com/citations?view_op=list_works&hl=en&user=Gg4yXLoAAAAJ', website: 'https://mak-raiaan.github.io/' } },
-  { name: 'Sadia Sultana Chowa', role: 'Senior Mentor', title: 'PhD Student', dept: 'Department of Software Systems & Cybersecurity', inst: 'Monash University, Australia', image: getImage('Chowa-scaled.jpg'), links: { email: 'mailto:sadia15-3052@diu.edu.bd', linkedin: 'https://www.linkedin.com/in/sadia-sultana-chowa-/', scholar: 'https://scholar.google.com/citations?user=JKcqHrMAAAAJ&hl=en', website: 'https://sultana-chowa.github.io/' } },
+  {
+    name: 'Mohaimenul Azam Khan Raiaan',
+    role: 'Senior Mentor',
+    title: 'PhD Student — Data Science & Artificial Intelligence',
+    dept: 'NativeBee+ Tech Facility Lab, Monash University',
+    inst: 'Melbourne, VIC, Australia',
+    bio: 'First-year Ph.D. student at Monash University supervised by Professor Alan Dorin and Associate Professor Ehsan Abbasnejad. His research focuses on computer vision and its applications in the behavioral analysis of bees, with emphasis on algorithm design for 3D modeling. Previously a Consultant-Research Assistant at Charles Darwin University contributing to computer vision and machine learning projects. He hosts The Half Hour Hustle every Friday 4:30–7:30 PM Melbourne time — open to anyone for discussions on research, ideas, and collaboration.',
+    image: getImage('mak-raian.jpg'),
+    links: {
+      email: 'mailto:mohaimenul.raiaan@monash.edu',
+      linkedin: 'https://www.linkedin.com/in/makraiaan/',
+      scholar: 'https://scholar.google.com/citations?view_op=list_works&hl=en&user=Gg4yXLoAAAAJ',
+      website: 'https://mak-raiaan.github.io/',
+    },
+  },
+  {
+    name: 'Sadia Sultana Chowa',
+    role: 'Senior Mentor',
+    title: 'PhD Student — Software Systems & Cybersecurity',
+    dept: 'Monash University, Australia',
+    inst: 'Melbourne, VIC, Australia',
+    bio: 'First-year PhD student at Monash University. Her research focuses on Large Language Models (LLMs), Computer Vision, and Artificial Intelligence, particularly in building intelligent vision–language systems and multimodal AI applications. Previously a remote Consultant–Research Assistant at Charles Darwin University contributing to applied AI research. Actively mentors students and early-stage researchers from Bangladesh through AAIINS Lab, guiding them on AI-driven research projects and fostering collaborative learning.',
+    image: getImage('Chowa-scaled.jpg'),
+    links: {
+      email: 'mailto:sadia15-3052@diu.edu.bd',
+      linkedin: 'https://www.linkedin.com/in/sadia-sultana-chowa-/',
+      scholar: 'https://scholar.google.com/citations?user=JKcqHrMAAAAJ&hl=en',
+      website: 'https://sultana-chowa.github.io/',
+    },
+  },
 ];
 
 const director = {
@@ -456,6 +484,7 @@ function FlipCard({ person, index }) {
   );
 }
 function TiltCard({ mentor, index }) {
+  const [flipped, setFlipped] = useState(false);
   const [visible, setVisible] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -471,49 +500,110 @@ function TiltCard({ mentor, index }) {
   }, []);
 
   function onMove(e) {
+    if (flipped) return;
     const card = cardRef.current;
     if (!card) return;
     const r = card.getBoundingClientRect();
-    setTilt({ x: ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -8, y: ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 8 });
+    setTilt({
+      x: ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -6,
+      y: ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 6,
+    });
   }
 
+  function toggle() { setFlipped(function(f) { return !f; }); }
+
   return (
-    <div ref={ref} className={styles.tiltOuter + ' ' + (visible ? styles.tiltVisible : '')} style={{ transitionDelay: index * 110 + 'ms' }}>
+    <div
+      ref={ref}
+      className={styles.tiltOuter + ' ' + (visible ? styles.tiltVisible : '')}
+      style={{ transitionDelay: index * 110 + 'ms' }}
+    >
       <div
         ref={cardRef}
-        className={styles.tiltCard}
+        className={styles.tiltScene}
+        onClick={toggle}
+        onKeyDown={function(e) { if (e.key === 'Enter' || e.key === ' ') toggle(); }}
+        tabIndex={0}
+        role="button"
+        aria-pressed={flipped}
+        aria-label={mentor.name + ' — click to ' + (flipped ? 'hide' : 'show') + ' bio'}
         style={{
-          transform: hovered ? 'perspective(900px) rotateX(' + tilt.x + 'deg) rotateY(' + tilt.y + 'deg) scale3d(1.025,1.025,1.025)' : 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)',
-          transition: hovered ? 'transform 0.12s ease, box-shadow 0.3s' : 'transform 0.55s ease, box-shadow 0.3s',
+          transform: !flipped && hovered
+            ? 'perspective(900px) rotateX(' + tilt.x + 'deg) rotateY(' + tilt.y + 'deg) scale3d(1.02,1.02,1.02)'
+            : 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)',
+          transition: hovered && !flipped ? 'transform 0.12s ease' : 'transform 0.55s ease',
         }}
         onMouseMove={onMove}
         onMouseEnter={function() { setHovered(true); }}
         onMouseLeave={function() { setTilt({ x: 0, y: 0 }); setHovered(false); }}
       >
-        <div className={styles.tiltAccent} aria-hidden="true" />
-        <div className={styles.tCTL} aria-hidden="true" />
-        <div className={styles.tCBR} aria-hidden="true" />
-        <div className={styles.tiltGlare} style={{ opacity: hovered ? 0.1 : 0, background: 'radial-gradient(circle at ' + (50 + tilt.y * 4) + '% ' + (50 + tilt.x * 4) + '%, rgba(200,168,107,0.9), transparent 65%)' }} aria-hidden="true" />
-        <div className={styles.tiltPhotoWrap}>
-          {mentor.image ? React.createElement('img', { src: mentor.image, alt: 'Photo of ' + mentor.name, loading: 'lazy' }) : React.createElement('div', { className: styles.tiltInitials }, mentor.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0, 2))}
-          <div className={styles.tiltShine} aria-hidden="true" />
-        </div>
-        <div className={styles.tiltInfo}>
-          <div className={styles.tiltRoleRow}>
-            <span className={styles.tiltRole}>{mentor.role}</span>
-            <div className={styles.tiltRoleLine} aria-hidden="true" />
+        <div className={styles.tiltFlipInner + ' ' + (flipped ? styles.tiltFlipped : '')}>
+
+          {/* ── FRONT — photo, name, org, social icons ── */}
+          <div className={styles.tiltFront}>
+            <div className={styles.tiltAccent} aria-hidden="true" />
+            <div className={styles.tCTL} aria-hidden="true" />
+            <div className={styles.tCBR} aria-hidden="true" />
+            <div
+              className={styles.tiltGlare}
+              style={{
+                opacity: hovered && !flipped ? 0.1 : 0,
+                background: 'radial-gradient(circle at ' + (50 + tilt.y * 4) + '% ' + (50 + tilt.x * 4) + '%, rgba(200,168,107,0.9), transparent 65%)',
+              }}
+              aria-hidden="true"
+            />
+            <div className={styles.tiltPhotoWrap}>
+              {mentor.image
+                ? React.createElement('img', { src: mentor.image, alt: 'Photo of ' + mentor.name, loading: 'lazy' })
+                : React.createElement('div', { className: styles.tiltInitials }, mentor.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0, 2))
+              }
+              <div className={styles.tiltShine} aria-hidden="true" />
+              <div className={styles.tiltPhotoGradient} aria-hidden="true" />
+              <div className={styles.tiltHint} aria-hidden="true">tap for bio</div>
+            </div>
+            <div className={styles.tiltInfo}>
+              <div className={styles.tiltRoleRow}>
+                <span className={styles.tiltRole}>{mentor.role}</span>
+                <div className={styles.tiltRoleLine} aria-hidden="true" />
+              </div>
+              <h3 className={styles.tiltName}>{mentor.name}</h3>
+              {mentor.title && React.createElement('p', { className: styles.tiltTitle }, mentor.title)}
+              {mentor.dept && React.createElement('p', { className: styles.tiltDept }, mentor.dept)}
+              {mentor.inst && React.createElement('p', { className: styles.tiltInst }, mentor.inst)}
+              {/* Social icons on front */}
+              <div
+                className={styles.tiltSocial}
+                onClick={function(e) { e.stopPropagation(); }}
+              >
+                {Object.keys(mentor.links).map(function(key) {
+                  return React.createElement('a', {
+                    key: key,
+                    href: mentor.links[key],
+                    className: styles.tiltSocialIcon,
+                    target: key !== 'email' ? '_blank' : undefined,
+                    rel: key !== 'email' ? 'noopener noreferrer' : undefined,
+                    'aria-label': LINK_LABELS[key] + ' of ' + mentor.name,
+                    title: LINK_LABELS[key],
+                  }, LINK_ICONS[key]);
+                })}
+              </div>
+            </div>
           </div>
-          <h3 className={styles.tiltName}>{mentor.name}</h3>
-          {mentor.title && React.createElement('p', { className: styles.tiltTitle }, mentor.title)}
-          {mentor.dept && React.createElement('p', { className: styles.tiltDept }, mentor.dept)}
-          {mentor.inst && React.createElement('p', { className: styles.tiltInst }, mentor.inst)}
-          <div className={styles.tiltLinks}>
-            {Object.keys(mentor.links).map(function(key) {
-              return React.createElement('a', { key: key, href: mentor.links[key], className: styles.tiltLink, target: key !== 'email' ? '_blank' : undefined, rel: key !== 'email' ? 'noopener noreferrer' : undefined, 'aria-label': LINK_LABELS[key] + ' of ' + mentor.name }, LINK_ICONS[key], LINK_LABELS[key]);
-            })}
+
+          {/* ── BACK — bio summary ── */}
+          <div className={styles.tiltBack}>
+            <div className={styles.tiltBackAccent} aria-hidden="true" />
+            <div className={styles.tiltBackContent}>
+              <span className={styles.tiltRole}>{mentor.role}</span>
+              <h3 className={styles.tiltNameBack}>{mentor.name}</h3>
+              {mentor.inst && React.createElement('p', { className: styles.tiltInst, style: { marginBottom: '0.75rem' } }, mentor.inst)}
+              <div className={styles.tiltBackRule} aria-hidden="true" />
+              <p className={styles.tiltBio}>{mentor.bio}</p>
+            </div>
+            <div className={styles.tiltCloseHint} aria-hidden="true">tap to close ×</div>
           </div>
+
         </div>
-        <div className={styles.tiltBorderGlow} aria-hidden="true" />
       </div>
     </div>
   );

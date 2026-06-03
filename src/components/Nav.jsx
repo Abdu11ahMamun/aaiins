@@ -42,7 +42,7 @@ export default function Nav() {
             className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
           >{l.label}</NavLink>
         ))}
-        <a href="mailto:aaiins.research@gmail.com" className={styles.join}>Join Us</a>
+        <Link to="/join" className={styles.join}>Join Us</Link>
       </div>
 
       {/* Mobile hamburger */}
@@ -64,7 +64,7 @@ export default function Nav() {
               onClick={() => setOpen(false)}
             >{l.label}</NavLink>
           ))}
-          <a href="mailto:aaiins.research@gmail.com" className={styles.drawerJoin} onClick={() => setOpen(false)}>Join Us</a>
+          <Link to="/join" className={styles.drawerJoin} onClick={() => setOpen(false)}>Join Us</Link>
         </div>
       )}
     </nav>

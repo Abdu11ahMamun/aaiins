@@ -1,370 +1,288 @@
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Bot, Brain, Eye, Wand2, HeartPulse, Leaf, Sparkles, Network, Activity } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
+import { UNSPLASH } from '../data';
+import styles from './Research.module.css';
 
-function Research() {
-  const cardRefs = useRef([]);
-  const [hoveredCard, setHoveredCard] = useState(null);
+const AREAS = [
+  {
+    num: '01', title: 'Artificial Intelligence', tag: 'Core',
+    color: '#36e1c6', glow: 'rgba(54,225,198,0.25)',
+    desc: 'At AAIINS, we conduct research across the broad spectrum of Artificial Intelligence to build systems capable of intelligent behavior. This includes developing algorithms for reasoning, planning, natural language understanding, and decision-making that can solve complex real-world challenges.',
+    icon: React.createElement('svg', { viewBox: '0 0 40 40', fill: 'none', stroke: 'currentColor', strokeWidth: '1.4', 'aria-hidden': true },
+      React.createElement('circle', { cx: '20', cy: '12', r: '4' }),
+      React.createElement('circle', { cx: '8',  cy: '30', r: '4' }),
+      React.createElement('circle', { cx: '32', cy: '30', r: '4' }),
+      React.createElement('line',   { x1: '20', y1: '16', x2: '9',  y2: '27' }),
+      React.createElement('line',   { x1: '20', y1: '16', x2: '31', y2: '27' }),
+      React.createElement('line',   { x1: '12', y1: '30', x2: '28', y2: '30' }),
+      React.createElement('circle', { cx: '20', cy: '12', r: '2', fill: 'currentColor', stroke: 'none' }),
+      React.createElement('circle', { cx: '8',  cy: '30', r: '2', fill: 'currentColor', stroke: 'none' }),
+      React.createElement('circle', { cx: '32', cy: '30', r: '2', fill: 'currentColor', stroke: 'none' })
+    ),
+  },
+  {
+    num: '02', title: 'Machine Learning', tag: 'Core',
+    color: '#8b8cff', glow: 'rgba(139,140,255,0.25)',
+    desc: 'Our Machine Learning research centers on developing algorithms that enable computers to learn from data and improve over time. We explore supervised, unsupervised, and reinforcement learning methods using advanced deep learning architectures for various applications.',
+    icon: React.createElement('svg', { viewBox: '0 0 40 40', fill: 'none', stroke: 'currentColor', strokeWidth: '1.4', 'aria-hidden': true },
+      React.createElement('path', { d: 'M8 28 Q14 8 20 20 Q26 32 32 12' }),
+      React.createElement('circle', { cx: '8',  cy: '28', r: '2', fill: 'currentColor', stroke: 'none' }),
+      React.createElement('circle', { cx: '20', cy: '20', r: '2', fill: 'currentColor', stroke: 'none' }),
+      React.createElement('circle', { cx: '32', cy: '12', r: '2', fill: 'currentColor', stroke: 'none' }),
+      React.createElement('line', { x1: '6', y1: '32', x2: '34', y2: '32', strokeWidth: '0.8', strokeDasharray: '2 2' }),
+      React.createElement('line', { x1: '6', y1: '8',  x2: '6',  y2: '32', strokeWidth: '0.8', strokeDasharray: '2 2' })
+    ),
+  },
+  {
+    num: '03', title: 'Computer Vision', tag: 'Applied',
+    color: '#68a8ff', glow: 'rgba(104,168,255,0.25)',
+    desc: 'Our research in Computer Vision focuses on enabling machines to interpret and understand visual data from the world. We develop advanced deep learning models for image and video analysis, object detection, recognition, and scene understanding applications.',
+    icon: React.createElement('svg', { viewBox: '0 0 40 40', fill: 'none', stroke: 'currentColor', strokeWidth: '1.4', 'aria-hidden': true },
+      React.createElement('ellipse', { cx: '20', cy: '20', rx: '16', ry: '10' }),
+      React.createElement('circle',  { cx: '20', cy: '20', r: '5' }),
+      React.createElement('circle',  { cx: '20', cy: '20', r: '2', fill: 'currentColor', stroke: 'none' }),
+      React.createElement('line', { x1: '4',  y1: '20', x2: '10', y2: '20', strokeWidth: '0.8' }),
+      React.createElement('line', { x1: '30', y1: '20', x2: '36', y2: '20', strokeWidth: '0.8' })
+    ),
+  },
+  {
+    num: '04', title: 'Generative AI', tag: 'Emerging',
+    color: '#facc15', glow: 'rgba(250,204,21,0.25)',
+    desc: 'In Generative AI, we focus on designing models that can create new and realistic content such as images, text, audio, and even video. These models enable creative applications like content generation, data augmentation, and synthetic data creation, unlocking new possibilities in human-computer interaction.',
+    icon: React.createElement('svg', { viewBox: '0 0 40 40', fill: 'none', stroke: 'currentColor', strokeWidth: '1.4', 'aria-hidden': true },
+      React.createElement('path', { d: 'M20 6 L24 16 L34 16 L26 23 L29 33 L20 27 L11 33 L14 23 L6 16 L16 16 Z' }),
+      React.createElement('circle', { cx: '20', cy: '20', r: '3', fill: 'currentColor', stroke: 'none', opacity: '0.6' })
+    ),
+  },
+  {
+    num: '05', title: 'Health Informatics', tag: 'Applied',
+    color: '#f43f5e', glow: 'rgba(244,63,94,0.25)',
+    desc: 'Our research in Health Informatics applies AI and machine learning to diverse healthcare data, including medical images, physiological signals, and electronic health records. We design advanced models to extract insights, support diagnosis, and predict outcomes, advancing personalised medicine and interpretable AI tools for clinical applications.',
+    icon: React.createElement('svg', { viewBox: '0 0 40 40', fill: 'none', stroke: 'currentColor', strokeWidth: '1.4', 'aria-hidden': true },
+      React.createElement('path', { d: 'M20 32 C20 32 6 24 6 15 A7 7 0 0 1 20 12 A7 7 0 0 1 34 15 C34 24 20 32 20 32Z' }),
+      React.createElement('line', { x1: '15', y1: '19', x2: '25', y2: '19' }),
+      React.createElement('line', { x1: '20', y1: '14', x2: '20', y2: '24' })
+    ),
+  },
+  {
+    num: '06', title: 'Environmental Modelling', tag: 'Applied',
+    color: '#10b981', glow: 'rgba(16,185,129,0.25)',
+    desc: 'We use AI and machine learning techniques to create models that simulate and predict environmental systems and changes. This includes climate modeling, pollution tracking, biodiversity monitoring, and ecosystem dynamics, integrating data from satellites, sensors, and simulations to anticipate future environmental impacts.',
+    icon: React.createElement('svg', { viewBox: '0 0 40 40', fill: 'none', stroke: 'currentColor', strokeWidth: '1.4', 'aria-hidden': true },
+      React.createElement('circle', { cx: '20', cy: '20', r: '14' }),
+      React.createElement('path', { d: 'M6 20 Q13 14 20 20 Q27 26 34 20', strokeWidth: '0.9' }),
+      React.createElement('path', { d: 'M6 20 Q13 26 20 20 Q27 14 34 20', strokeWidth: '0.9' }),
+      React.createElement('line', { x1: '20', y1: '6',  x2: '20', y2: '34', strokeWidth: '0.9' })
+    ),
+  },
+];
 
-  useEffect(() => {
-    const handleMouseMove = (card, index) => (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -8;
-      const rotateY = ((x - centerX) / centerX) * 8;
-      
-      card.style.transform = `perspective(1400px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px) scale3d(1.02, 1.02, 1.02)`;
-      card.style.setProperty('--mx', `${(x / rect.width) * 100}%`);
-      card.style.setProperty('--my', `${(y / rect.height) * 100}%`);
-    };
+function ResearchCard({ area, index }) {
+  const [visible, setVisible] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const ref = useRef(null);
+  const cardRef = useRef(null);
 
-    const handleMouseEnter = (card, index) => () => {
-      setHoveredCard(index);
-    };
-
-    const handleMouseLeave = (card) => () => {
-      card.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale3d(1, 1, 1)';
-      setHoveredCard(null);
-    };
-
-    cardRefs.current.forEach((card, index) => {
-      if (card) {
-        const moveHandler = handleMouseMove(card, index);
-        const enterHandler = handleMouseEnter(card, index);
-        const leaveHandler = handleMouseLeave(card);
-        card.addEventListener('mousemove', moveHandler);
-        card.addEventListener('mouseenter', enterHandler);
-        card.addEventListener('mouseleave', leaveHandler);
-        card._moveHandler = moveHandler;
-        card._enterHandler = enterHandler;
-        card._leaveHandler = leaveHandler;
-      }
-    });
-
-    return () => {
-      cardRefs.current.forEach((card) => {
-        if (card && card._moveHandler && card._enterHandler && card._leaveHandler) {
-          card.removeEventListener('mousemove', card._moveHandler);
-          card.removeEventListener('mouseenter', card._enterHandler);
-          card.removeEventListener('mouseleave', card._leaveHandler);
-        }
-      });
-    };
+  useEffect(function() {
+    const obs = new IntersectionObserver(
+      function(entries) {
+        if (entries[0].isIntersecting) { setVisible(true); obs.unobserve(entries[0].target); }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return function() { obs.disconnect(); };
   }, []);
 
-  const addCardRef = (el) => {
-    if (el && !cardRefs.current.includes(el)) {
-      cardRefs.current.push(el);
-    }
-  };
+  function handleMouseMove(e) {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const dx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const dy = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    setTilt({ x: dy * -8, y: dx * 8 });
+  }
 
-  const researchAreas = [
-    {
-      icon: Bot,
-      title: 'Artificial Intelligence',
-      description: 'At AAIINS, we conduct research across the broad spectrum of Artificial Intelligence to build systems capable of intelligent behavior. This includes developing algorithms for reasoning, planning, natural language understanding, and decision-making that can solve complex real-world challenges.',
-      color: 'teal',
-      gradient: 'from-[#36e1c6] via-[#4dd4ac] to-[#36e1c6]',
-      bgGradient: 'from-[rgba(54,225,198,0.15)] via-[rgba(77,212,172,0.08)] to-transparent',
-      iconBg: 'from-[rgba(54,225,198,0.25)] to-[rgba(54,225,198,0.10)]',
-      glowColor: 'rgba(54,225,198,0.4)',
-      illustration: Network
-    },
-    {
-      icon: Brain,
-      title: 'Machine Learning',
-      description: 'Our Machine Learning research centers on developing algorithms that enable computers to learn from data and improve over time. We explore supervised, unsupervised, and reinforcement learning methods using advanced deep learning architectures for various applications.',
-      color: 'purple',
-      gradient: 'from-[#8b8cff] via-[#a5a6ff] to-[#8b8cff]',
-      bgGradient: 'from-[rgba(139,140,255,0.15)] via-[rgba(165,166,255,0.08)] to-transparent',
-      iconBg: 'from-[rgba(139,140,255,0.25)] to-[rgba(139,140,255,0.10)]',
-      glowColor: 'rgba(139,140,255,0.4)',
-      illustration: Activity
-    },
-    {
-      icon: Eye,
-      title: 'Computer Vision',
-      description: 'Our research in Computer Vision focuses on enabling machines to interpret and understand visual data from the world. We develop advanced deep learning models for image and video analysis, object detection, recognition, and scene understanding applications.',
-      color: 'blue',
-      gradient: 'from-[#68a8ff] via-[#8ec5ff] to-[#68a8ff]',
-      bgGradient: 'from-[rgba(104,168,255,0.15)] via-[rgba(142,197,255,0.08)] to-transparent',
-      iconBg: 'from-[rgba(104,168,255,0.25)] to-[rgba(104,168,255,0.10)]',
-      glowColor: 'rgba(104,168,255,0.4)',
-      illustration: Sparkles
-    },
-    {
-      icon: Wand2,
-      title: 'Generative AI',
-      description: 'In Generative AI, we focus on designing models that can create new and realistic content such as images, text, audio, and even video. These models enable creative applications like content generation, data augmentation, and synthetic data creation. By improving the quality and diversity of generated content, we aim to unlock new possibilities in human-computer interaction.',
-      color: 'amber',
-      gradient: 'from-[#facc15] via-[#fde047] to-[#facc15]',
-      bgGradient: 'from-[rgba(250,204,21,0.15)] via-[rgba(253,224,71,0.08)] to-transparent',
-      iconBg: 'from-[rgba(250,204,21,0.25)] to-[rgba(250,204,21,0.10)]',
-      glowColor: 'rgba(250,204,21,0.4)',
-      illustration: Sparkles
-    },
-    {
-      icon: HeartPulse,
-      title: 'Health Informatics',
-      description: 'Our research in Health Informatics applies AI and machine learning to diverse healthcare data, including medical images, physiological signals, and electronic health records. We design advanced models to extract insights, support diagnosis, and predict outcomes. By integrating multi-modal health data, we aim to advance personalised medicine and develop interpretable AI tools for clinical applications.',
-      color: 'rose',
-      gradient: 'from-[#f43f5e] via-[#fb7185] to-[#f43f5e]',
-      bgGradient: 'from-[rgba(244,63,94,0.15)] via-[rgba(251,113,133,0.08)] to-transparent',
-      iconBg: 'from-[rgba(244,63,94,0.25)] to-[rgba(244,63,94,0.10)]',
-      glowColor: 'rgba(244,63,94,0.4)',
-      illustration: Activity
-    },
-    {
-      icon: Leaf,
-      title: 'Environmental Modelling',
-      description: 'We use AI and machine learning techniques to create models that simulate and predict environmental systems and changes. This includes climate modeling, pollution tracking, biodiversity monitoring, and ecosystem dynamics. Our research integrates data from satellites, sensors, and simulations to enhance accuracy and reliability. Our models help understand complex interactions within natural systems and anticipate future environmental impacts.',
-      color: 'emerald',
-      gradient: 'from-[#10b981] via-[#34d399] to-[#10b981]',
-      bgGradient: 'from-[rgba(16,185,129,0.15)] via-[rgba(52,211,153,0.08)] to-transparent',
-      iconBg: 'from-[rgba(16,185,129,0.25)] to-[rgba(16,185,129,0.10)]',
-      glowColor: 'rgba(16,185,129,0.4)',
-      illustration: Network
-    }
-  ];
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 });
+    setHovered(false);
+  }
+
+  const transform = hovered
+    ? 'perspective(900px) rotateX(' + tilt.x + 'deg) rotateY(' + tilt.y + 'deg) scale3d(1.02,1.02,1.02)'
+    : 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
 
   return (
-    <div className="relative z-[1] pt-[72px] min-h-screen overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.03, 0.06, 0.03],
+    <div
+      ref={ref}
+      className={styles.cardOuter + ' ' + (visible ? styles.cardVisible : '')}
+      style={{ transitionDelay: (index % 3) * 100 + 'ms' }}
+    >
+      <div
+        ref={cardRef}
+        className={styles.card + ' ' + (expanded ? styles.cardExpanded : '')}
+        style={{
+          transform: transform,
+          transition: hovered ? 'transform 0.12s ease, box-shadow 0.3s' : 'transform 0.55s ease, box-shadow 0.3s',
+          '--card-color': area.color,
+          '--card-glow': area.glow,
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={function() { setHovered(true); }}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* top color accent line */}
+        <div className={styles.cardAccentLine} aria-hidden="true" />
+
+        {/* glare */}
+        <div
+          className={styles.cardGlare}
+          style={{
+            opacity: hovered ? 0.1 : 0,
+            background: 'radial-gradient(circle at ' + (50 + tilt.y * 4) + '% ' + (50 + tilt.x * 4) + '%, ' + area.color + ', transparent 65%)',
           }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-[10%] right-[15%] w-[500px] h-[500px] rounded-full bg-[#36e1c6] blur-[120px]"
+          aria-hidden="true"
         />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.03, 0.05, 0.03],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-          className="absolute bottom-[15%] left-[10%] w-[600px] h-[600px] rounded-full bg-[#8b8cff] blur-[130px]"
-        />
-      </div>
 
-      {/* Page Hero */}
-      <div className="py-16 pb-8 relative">
-        <div className="max-w-[1240px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-[#36e1c6]/[0.15] to-[#8b8cff]/[0.15] border border-[#36e1c6]/[0.3] mb-6 backdrop-blur-sm"
-            >
-              <span className="text-[0.85rem] font-bold uppercase tracking-[0.15em] bg-gradient-to-r from-[#36e1c6] to-[#8b8cff] bg-clip-text text-transparent">
-                Research Excellence
-              </span>
-            </motion.div>
-            
-            <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-[900] tracking-[-0.04em] mb-6 leading-[1.1]">
-              <span className="bg-gradient-to-r from-white via-white to-[#b8c5d6] bg-clip-text text-transparent">
-                Our Research Focus
-              </span>
-            </h1>
-            
-            <p className="max-w-[820px] mx-auto text-[1.15rem] text-[#b8c5d6] leading-[1.8] font-light">
-              Advancing artificial intelligence through interdisciplinary collaboration, technical excellence, and impactful innovation across six core research domains.
-            </p>
-          </motion.div>
-        </div>
-      </div>
+        {/* corner accents */}
+        <div className={styles.cTL} aria-hidden="true" />
+        <div className={styles.cBR} aria-hidden="true" />
 
-      {/* Research Areas Grid */}
-      <section className="py-12 pb-24 relative">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {researchAreas.map((area, i) => (
-              <motion.div
-                key={i}
-                ref={addCardRef}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.7, delay: i * 0.15 }}
-                className="group relative rounded-[28px] bg-gradient-to-br from-white/[0.10] via-white/[0.05] to-transparent border border-white/[0.12] overflow-hidden transition-all duration-500 ease-out"
-                style={{ 
-                  transformStyle: 'preserve-3d',
-                  willChange: 'transform'
-                }}
-              >
-                {/* Animated gradient background */}
-                <motion.div 
-                  className={`absolute inset-0 bg-gradient-to-br ${area.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                  animate={hoveredCard === i ? {
-                    backgroundPosition: ['0% 0%', '100% 100%'],
-                  } : {}}
-                  transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-                />
-                
-                {/* Glow effect on hover */}
-                <div 
-                  className="absolute inset-[-2px] rounded-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"
-                  style={{
-                    background: `radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), ${area.glowColor}, transparent 40%)`
-                  }}
-                />
-                
-                {/* Glass reflection effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                {/* Shimmer effect */}
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                  style={{
-                    background: 'linear-gradient(120deg, transparent, rgba(255,255,255,0.1) 50%, transparent)',
-                  }}
-                  animate={hoveredCard === i ? {
-                    x: ['-100%', '200%'],
-                  } : {}}
-                  transition={{ duration: 1.5, ease: "easeInOut" }}
-                />
-
-                {/* Content */}
-                <div className="relative z-10 p-8" style={{ transform: 'translateZ(40px)', transformStyle: 'preserve-3d' }}>
-                  {/* Icon and decoration */}
-                  <div className="flex items-start justify-between mb-6">
-                    <motion.div
-                      whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
-                      className={`relative w-20 h-20 rounded-[20px] bg-gradient-to-br ${area.iconBg} backdrop-blur-xl border border-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.12)] flex items-center justify-center group-hover:shadow-[0_12px_48px_rgba(0,0,0,0.2)] transition-all duration-500`}
-                      style={{ transform: 'translateZ(60px)' }}
-                    >
-                      <area.icon 
-                        size={36} 
-                        className={`${
-                          area.color === 'teal' ? 'text-[#36e1c6]' :
-                          area.color === 'purple' ? 'text-[#bbb8ff]' :
-                          area.color === 'blue' ? 'text-[#9cc2ff]' :
-                          area.color === 'amber' ? 'text-[#ffd86f]' :
-                          area.color === 'rose' ? 'text-[#ff9bb0]' :
-                          'text-[#68f0bb]'
-                        }`}
-                      />
-                      
-                      {/* Icon glow */}
-                      <div className={`absolute inset-0 rounded-[20px] bg-gradient-to-br ${area.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`} />
-                    </motion.div>
-
-                    {/* Decorative illustration icon */}
-                    <motion.div
-                      animate={hoveredCard === i ? {
-                        rotate: [0, 5, -5, 0],
-                        scale: [1, 1.1, 1],
-                      } : {}}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="opacity-0 group-hover:opacity-30 transition-opacity duration-500"
-                    >
-                      <area.illustration size={80} className="text-white" />
-                    </motion.div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 
-                    className="text-[1.75rem] font-[800] mb-4 tracking-[-0.02em] text-white group-hover:text-white transition-colors duration-300"
-                    style={{ transform: 'translateZ(50px)' }}
-                  >
-                    {area.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p 
-                    className="text-[1rem] text-[#b8c5d6] leading-[1.75] font-light group-hover:text-[#d4dce8] transition-colors duration-300"
-                    style={{ transform: 'translateZ(40px)' }}
-                  >
-                    {area.description}
-                  </p>
-
-                  {/* Decorative line */}
-                  <motion.div
-                    className={`mt-6 h-1 rounded-full bg-gradient-to-r ${area.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: hoveredCard === i ? '100%' : 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    style={{ transform: 'translateZ(30px)' }}
-                  />
-                </div>
-
-                {/* Bottom edge highlight */}
-                <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${area.gradient} opacity-0 group-hover:opacity-60 transition-opacity duration-500`} />
-              </motion.div>
-            ))}
+        <div className={styles.cardHead}>
+          <div className={styles.cardIconWrap} style={{ color: area.color }}>
+            {area.icon}
           </div>
+          <span className={styles.cardNum}>{area.num}</span>
         </div>
-      </section>
 
-      {/* Bottom CTA Section */}
-      <section className="py-16 pb-24 relative">
-        <div className="max-w-[900px] mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative p-10 rounded-[32px] bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-transparent border border-white/[0.15] text-center overflow-hidden group"
-          >
-            {/* Animated background */}
-            <motion.div
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.1, 0.2, 0.1],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute inset-0 bg-gradient-to-r from-[#36e1c6]/[0.1] via-[#8b8cff]/[0.1] to-[#36e1c6]/[0.1]"
-            />
-            
-            <div className="relative z-10">
-              <h2 className="text-[2rem] font-[850] mb-4 tracking-[-0.02em]">
-                <span className="bg-gradient-to-r from-white to-[#b8c5d6] bg-clip-text text-transparent">
-                  Collaborate With Us
-                </span>
-              </h2>
-              <p className="text-[1.1rem] text-[#b8c5d6] mb-8 leading-[1.7] max-w-[600px] mx-auto">
-                Join our research community and contribute to groundbreaking AI innovations that shape the future.
-              </p>
-              
-              <motion.a
-                href="/join"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-[16px] bg-gradient-to-r from-[#36e1c6] to-[#68a8ff] text-[#0a1929] font-[800] text-[1.05rem] shadow-[0_12px_48px_rgba(54,225,198,0.3)] hover:shadow-[0_16px_64px_rgba(54,225,198,0.4)] transition-all duration-300"
-              >
-                <Sparkles size={20} />
-                Get Involved
-              </motion.a>
-            </div>
-          </motion.div>
+        <h2 className={styles.cardTitle}>{area.title}</h2>
+
+        <div className={styles.cardTagRow}>
+          <span className={styles.cardTag} style={{ borderColor: area.color + '55', color: area.color }}>{area.tag}</span>
+          <div className={styles.cardTagLine} aria-hidden="true" />
         </div>
-      </section>
+
+        <p className={styles.cardDesc + ' ' + (expanded ? styles.cardDescExpanded : '')}>
+          {area.desc}
+        </p>
+
+        <button
+          className={styles.cardToggle}
+          onClick={function() { setExpanded(function(e) { return !e; }); }}
+          aria-expanded={expanded}
+          style={{ color: area.color }}
+        >
+          {expanded ? 'Show less ↑' : 'Read more ↓'}
+        </button>
+
+        {/* bottom glow */}
+        <div
+          className={styles.cardBottomGlow}
+          style={{ background: 'linear-gradient(to top, ' + area.glow + ' 0%, transparent 100%)', opacity: hovered ? 1 : 0.4 }}
+          aria-hidden="true"
+        />
+      </div>
     </div>
   );
 }
 
-export default Research;
+export default function Research() {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const filters = ['All', 'Core', 'Applied', 'Emerging'];
+
+  const filtered = activeFilter === 'All'
+    ? AREAS
+    : AREAS.filter(function(a) { return a.tag === activeFilter; });
+
+  return (
+    React.createElement('main', { id: 'main-content' },
+
+      React.createElement('div', { className: 'page-hero' },
+        React.createElement('img', { src: UNSPLASH.researchBg, alt: '', className: 'page-hero-img', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-overlay', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-dots', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-content' },
+          React.createElement('span', { className: 'eyebrow' }, 'Research Excellence'),
+          React.createElement('h1', { className: 'page-hero-title' },
+            'Our Research ', React.createElement('em', null, 'Focus')
+          )
+        )
+      ),
+
+      React.createElement('section', { className: styles.introSection, 'aria-label': 'Research overview' },
+        React.createElement('div', { className: styles.introInner },
+          React.createElement('div', { className: styles.introLeft },
+            React.createElement('span', { className: 'eyebrow' }, 'Six Core Domains'),
+            React.createElement('h2', { className: styles.introTitle },
+              'Advancing AI through ', React.createElement('em', null, 'interdisciplinary'), ' collaboration'
+            ),
+            React.createElement('div', { className: 'gold-rule' }),
+            React.createElement('p', { className: styles.introText },
+              'We work at the intersection of intelligence and impact — building systems that reason, learn, see, create, heal, and protect. Each domain feeds into the others, forming a cohesive research ecosystem.'
+            )
+          ),
+          React.createElement('div', { className: styles.introRight, 'aria-hidden': true },
+            React.createElement('svg', { viewBox: '0 0 200 200', fill: 'none', className: styles.introOrb },
+              React.createElement('circle', { cx: '100', cy: '100', r: '90', stroke: 'rgba(200,168,107,0.15)', strokeWidth: '1' }),
+              React.createElement('circle', { cx: '100', cy: '100', r: '70', stroke: 'rgba(200,168,107,0.1)', strokeWidth: '1', strokeDasharray: '4 6' }),
+              React.createElement('circle', { cx: '100', cy: '100', r: '50', stroke: 'rgba(200,168,107,0.08)', strokeWidth: '1' }),
+              React.createElement('circle', { cx: '100', cy: '20',  r: '5', fill: 'rgba(54,225,198,0.7)' }),
+              React.createElement('circle', { cx: '170', cy: '70',  r: '5', fill: 'rgba(139,140,255,0.7)' }),
+              React.createElement('circle', { cx: '155', cy: '155', r: '5', fill: 'rgba(104,168,255,0.7)' }),
+              React.createElement('circle', { cx: '60',  cy: '175', r: '5', fill: 'rgba(250,204,21,0.7)' }),
+              React.createElement('circle', { cx: '18',  cy: '120', r: '5', fill: 'rgba(244,63,94,0.7)' }),
+              React.createElement('circle', { cx: '40',  cy: '50',  r: '5', fill: 'rgba(16,185,129,0.7)' }),
+              React.createElement('line', { x1: '100', y1: '20',  x2: '170', y2: '70',  stroke: 'rgba(200,168,107,0.2)', strokeWidth: '0.8' }),
+              React.createElement('line', { x1: '170', y1: '70',  x2: '155', y2: '155', stroke: 'rgba(200,168,107,0.2)', strokeWidth: '0.8' }),
+              React.createElement('line', { x1: '155', y1: '155', x2: '60',  y2: '175', stroke: 'rgba(200,168,107,0.2)', strokeWidth: '0.8' }),
+              React.createElement('line', { x1: '60',  y1: '175', x2: '18',  y2: '120', stroke: 'rgba(200,168,107,0.2)', strokeWidth: '0.8' }),
+              React.createElement('line', { x1: '18',  y1: '120', x2: '40',  y2: '50',  stroke: 'rgba(200,168,107,0.2)', strokeWidth: '0.8' }),
+              React.createElement('line', { x1: '40',  y1: '50',  x2: '100', y2: '20',  stroke: 'rgba(200,168,107,0.2)', strokeWidth: '0.8' }),
+              React.createElement('circle', { cx: '100', cy: '100', r: '8', fill: 'rgba(200,168,107,0.3)' }),
+              React.createElement('circle', { cx: '100', cy: '100', r: '4', fill: 'rgba(200,168,107,0.7)' })
+            )
+          )
+        )
+      ),
+
+      React.createElement('section', { className: styles.cardsSection, 'aria-label': 'Research areas' },
+
+        React.createElement('div', { className: styles.filterRow, role: 'group', 'aria-label': 'Filter research areas' },
+          filters.map(function(f) {
+            return React.createElement(
+              'button',
+              {
+                key: f,
+                className: styles.filterBtn + ' ' + (activeFilter === f ? styles.filterBtnOn : ''),
+                onClick: function() { setActiveFilter(f); },
+                'aria-pressed': activeFilter === f,
+              },
+              f
+            );
+          })
+        ),
+
+        React.createElement('div', { className: styles.grid },
+          filtered.map(function(area, i) {
+            return React.createElement(ResearchCard, { key: area.num, area: area, index: i });
+          })
+        )
+      ),
+
+      React.createElement('div', { className: 'collab-cta' },
+        React.createElement('h2', null, 'Collaborate ', React.createElement('em', null, 'with us')),
+        React.createElement('p', null, 'Join our research community and contribute to groundbreaking AI innovations that shape the future.'),
+        React.createElement('div', { className: 'cta-buttons' },
+          React.createElement('a', { href: 'mailto:aaiins.research@gmail.com', className: 'btn-primary' }, 'Get Involved'),
+          React.createElement(Link, { to: '/publications', className: 'btn-outline' }, 'View Publications')
+        )
+      ),
+
+      React.createElement(Footer, null)
+    )
+  );
+}

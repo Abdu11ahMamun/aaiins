@@ -1,245 +1,308 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { Crown, ShieldCheck, Mail, Linkedin, BookOpen, Globe } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
+import { UNSPLASH } from '../data';
+import styles from './Mentors.module.css';
 
-function Mentors() {
-  const imageMap = import.meta.glob('../assets/*', { eager: true, import: 'default' });
-  const getImage = (fileName) => imageMap[`../assets/${fileName}`] || null;
+const imageMap = import.meta.glob('../assets/*', { eager: true, import: 'default' });
+const getImage = (fileName) => imageMap[`../assets/${fileName}`] || null;
 
-  const mentors = [
-    {
-      name: 'Professor Sami Azam',
-      tier: 'Chief Mentor',
-      title: 'Discipline Chair, Information Technology',
-      department: 'Faculty of Science and Technology',
-      institution: 'Charles Darwin University, Australia',
-      image: getImage('sami-azam_0-removebg-preview-e1757102988261.png'),
-      links: {
-        email: 'mailto:sami.azam@cdu.edu.au',
-        scholar: 'https://www.scopus.com/authid/detail.uri?authorId=54894635100',
-        website: 'https://researchers.cdu.edu.au/en/persons/sami-azam',
-      },
-      gradient: 'from-[#374151] to-[#1f2937]',
-      accent: '#cbd5e1',
-      icon: Crown,
-      initials: 'SA',
+const CHIEF = {
+  name: 'Professor Sami Azam',
+  role: 'Chief Mentor',
+  org: ['Discipline Chair, Information Technology', 'Faculty of Science and Technology', 'Charles Darwin University, Australia'],
+  bio: 'Professor Sami Azam leads the academic panel for AAIINS Lab, providing strategic research direction and mentorship. His expertise spans applied AI, computer vision, and intelligent systems, with over 120 international publications and a deep commitment to nurturing the next generation of AI researchers worldwide.',
+  image: getImage('sami-azam_0-removebg-preview-e1757102988261.png'),
+  links: {
+    email: 'mailto:sami.azam@cdu.edu.au',
+    scholar: 'https://www.scopus.com/authid/detail.uri?authorId=54894635100',
+    website: 'https://researchers.cdu.edu.au/en/persons/sami-azam',
+  },
+};
+
+const SENIOR = [
+  {
+    name: 'Mohaimenul Azam Khan Raiaan',
+    role: 'Senior Mentor',
+    title: 'PhD Student',
+    dept: 'Department of Data Science and AI',
+    inst: 'Monash University, Australia',
+    image: getImage('mak-raian.jpg'),
+    links: {
+      email: 'mailto:mohaimenul.raiaan@monash.edu',
+      linkedin: 'https://www.linkedin.com/in/makraiaan/',
+      scholar: 'https://scholar.google.com/citations?view_op=list_works&hl=en&user=Gg4yXLoAAAAJ',
+      website: 'https://mak-raiaan.github.io/',
     },
-    {
-      name: 'Mohaimenul Azam Khan Raiaan',
-      tier: 'Senior Mentor',
-      title: 'PhD Student',
-      department: 'Department of Data Science and AI',
-      institution: 'Monash University, Australia',
-      bio: '',
-      image: getImage('Mohaimenul Azam Khan Raiaan.jpg') || getImage('mak-raian.jpg'),
-      links: {
-        email: 'mailto:mohaimenul.raiaan@monash.edu',
-        linkedin: 'https://www.linkedin.com/in/makraiaan/',
-        scholar: 'https://scholar.google.com/citations?view_op=list_works&hl=en&user=Gg4yXLoAAAAJ',
-        website: 'https://mak-raiaan.github.io/',
-      },
-      gradient: 'from-[#1f3b5a] to-[#1e293b]',
-      accent: '#7dd3fc',
-      icon: ShieldCheck,
-      initials: 'MR',
+  },
+  {
+    name: 'Sadia Sultana Chowa',
+    role: 'Senior Mentor',
+    title: 'PhD Student',
+    dept: 'Department of Software Systems & Cybersecurity',
+    inst: 'Monash University, Australia',
+    image: getImage('Chowa-scaled.jpg'),
+    links: {
+      email: 'mailto:sadia15-3052@diu.edu.bd',
+      linkedin: 'https://www.linkedin.com/in/sadia-sultana-chowa-/',
+      scholar: 'https://scholar.google.com/citations?user=JKcqHrMAAAAJ&hl=en',
+      website: 'https://sultana-chowa.github.io/',
     },
-    {
-      name: 'Sadia Sultana Chowa',
-      tier: 'Senior Mentor',
-      title: 'PhD Student',
-      department: 'Department of Software Systems & Cybersecurity',
-      institution: 'Monash University, Australia',
-      bio: '',
-      image: getImage('Chowa-scaled.jpg'),
-      links: {
-        email: 'mailto:sadia15-3052@diu.edu.bd',
-        linkedin: 'https://www.linkedin.com/in/sadia-sultana-chowa-/',
-        scholar: 'https://scholar.google.com/citations?user=JKcqHrMAAAAJ&hl=en',
-        website: 'https://sultana-chowa.github.io/',
+  },
+];
+
+const LINK_ICONS = {
+  email: React.createElement('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.8', 'aria-hidden': true },
+    React.createElement('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }),
+    React.createElement('polyline', { points: '22,6 12,13 2,6' })
+  ),
+  linkedin: React.createElement('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.8', 'aria-hidden': true },
+    React.createElement('path', { d: 'M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z' }),
+    React.createElement('rect', { x: '2', y: '9', width: '4', height: '12' }),
+    React.createElement('circle', { cx: '4', cy: '4', r: '2' })
+  ),
+  scholar: React.createElement('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.8', 'aria-hidden': true },
+    React.createElement('path', { d: 'M22 10v6M2 10l10-5 10 5-10 5z' }),
+    React.createElement('path', { d: 'M6 12v5c3 3 9 3 12 0v-5' })
+  ),
+  website: React.createElement('svg', { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.8', 'aria-hidden': true },
+    React.createElement('circle', { cx: '12', cy: '12', r: '10' }),
+    React.createElement('line', { x1: '2', y1: '12', x2: '22', y2: '12' }),
+    React.createElement('path', { d: 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' })
+  ),
+};
+
+const LINK_LABELS = { email: 'Email', linkedin: 'LinkedIn', scholar: 'Scholar', website: 'Website' };
+
+// ── 3D tilt card for senior mentors ──
+function TiltCard({ mentor, index }) {
+  const [visible, setVisible] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef(null);
+  const cardRef = useRef(null);
+
+  useEffect(function() {
+    const obs = new IntersectionObserver(
+      function(entries) {
+        if (entries[0].isIntersecting) {
+          setVisible(true);
+          obs.unobserve(entries[0].target);
+        }
       },
-      gradient: 'from-[#1f4d4d] to-[#1e293b]',
-      accent: '#5eead4',
-      icon: ShieldCheck,
-      initials: 'SC',
-    },
-  ];
-
-  const featuredMentor = mentors[0];
-  const supportingMentors = mentors.slice(1);
-
-  const MentorCard = ({ mentor, index, featured = false }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-      <motion.article
-        initial={{ opacity: 0, y: 22 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.55, delay: index * 0.1 }}
-        whileHover={{ y: -3 }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className={`group relative ${featured ? 'mx-auto max-w-[1120px]' : ''}`}
-      >
-        <div className="absolute inset-0 translate-y-[4px] rounded-[26px] bg-black/25 blur-[2px]" />
-        <motion.div
-          animate={{
-            borderColor: isHovered
-              ? ['rgba(56,189,248,0.95)', 'rgba(167,139,250,0.95)', 'rgba(52,211,153,0.95)', 'rgba(56,189,248,0.95)']
-              : 'rgba(255,255,255,0.12)',
-            boxShadow: isHovered
-              ? ['0 0 0 1px rgba(56,189,248,0.35)', '0 0 0 1px rgba(167,139,250,0.35)', '0 0 0 1px rgba(52,211,153,0.35)', '0 0 0 1px rgba(56,189,248,0.35)']
-              : '0 0 0 0px rgba(0,0,0,0)',
-          }}
-          transition={{
-            borderColor: { duration: 1.8, ease: 'linear', repeat: isHovered ? Infinity : 0 },
-            boxShadow: { duration: 1.8, ease: 'linear', repeat: isHovered ? Infinity : 0 },
-          }}
-          className={`relative rounded-[26px] border border-white/[0.12] bg-[#0f1726]/95 p-6 backdrop-blur-[14px] ${
-            featured ? 'lg:p-10' : ''
-          }`}
-        >
-          <div className="absolute inset-0 rounded-[26px] bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.01))]" />
-
-          <div className="relative flex flex-col items-center text-center">
-            <div
-              className={`overflow-hidden rounded-[18px] border border-white/[0.16] bg-gradient-to-br ${mentor.gradient} shadow-[0_8px_22px_rgba(0,0,0,0.3)] ${
-                featured ? 'h-56 w-56 lg:h-64 lg:w-64' : 'h-40 w-40 lg:h-44 lg:w-44'
-              }`}
-            >
-              {mentor.image ? (
-                <img src={mentor.image} alt={mentor.name} className="h-full w-full object-cover object-top" />
-              ) : (
-                <div className="grid h-full w-full place-items-center text-2xl font-black text-white">{mentor.initials}</div>
-              )}
-            </div>
-
-            <div className="mt-6 max-w-[860px]">
-              <h3 className={`${featured ? 'text-[2.15rem]' : 'text-[1.35rem]'} font-[850] tracking-[-0.03em]`}>
-                {mentor.name}
-              </h3>
-
-              <p className="mt-2 text-[1rem] font-semibold text-[#c7d3e2]">{mentor.title}</p>
-              <p className="mt-1 text-[0.95rem] font-medium text-[#9fb0c7]">{mentor.department}</p>
-              <p className="mt-1 text-[0.95rem] text-[#8ea2bb]">{mentor.institution}</p>
-
-              {featured && mentor.bio && (
-                <p className="mt-4 rounded-[14px] border border-white/[0.10] bg-white/[0.03] px-4 py-3 text-[0.98rem] leading-[1.75] text-[#cdd8e8]">
-                  {mentor.bio}
-                </p>
-              )}
-
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {mentor.links.email && (
-                  <a
-                    href={mentor.links.email}
-                    className="inline-flex items-center gap-1.5 rounded-[10px] border border-white/[0.14] bg-white/[0.04] px-2.5 py-1.5 text-xs font-semibold text-[#c9d5e7] transition-colors hover:border-[#68a8ff]/50 hover:text-[#68a8ff]"
-                    aria-label={`${mentor.name} email`}
-                  >
-                    <Mail size={13} />
-                    Email
-                  </a>
-                )}
-                {mentor.links.linkedin && (
-                  <a
-                    href={mentor.links.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-[10px] border border-white/[0.14] bg-white/[0.04] px-2.5 py-1.5 text-xs font-semibold text-[#c9d5e7] transition-colors hover:border-[#0ea5e9]/50 hover:text-[#0ea5e9]"
-                    aria-label={`${mentor.name} LinkedIn`}
-                  >
-                    <Linkedin size={13} />
-                    LinkedIn
-                  </a>
-                )}
-                {mentor.links.scholar && (
-                  <a
-                    href={mentor.links.scholar}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-[10px] border border-white/[0.14] bg-white/[0.04] px-2.5 py-1.5 text-xs font-semibold text-[#c9d5e7] transition-colors hover:border-[#f59e0b]/50 hover:text-[#f59e0b]"
-                    aria-label={`${mentor.name} profile`}
-                  >
-                    <BookOpen size={13} />
-                    Scholar
-                  </a>
-                )}
-                {mentor.links.website && (
-                  <a
-                    href={mentor.links.website}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-[10px] border border-white/[0.14] bg-white/[0.04] px-2.5 py-1.5 text-xs font-semibold text-[#c9d5e7] transition-colors hover:border-[#34d399]/50 hover:text-[#34d399]"
-                    aria-label={`${mentor.name} website`}
-                  >
-                    <Globe size={13} />
-                    Website
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.article>
+      { threshold: 0.15 }
     );
-  };
+    if (ref.current) obs.observe(ref.current);
+    return function() { obs.disconnect(); };
+  }, []);
+
+  function handleMouseMove(e) {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    setTilt({ x: dy * -10, y: dx * 10 });
+  }
+
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 });
+    setHovered(false);
+  }
+
+  const transform = hovered
+    ? 'perspective(800px) rotateX(' + tilt.x + 'deg) rotateY(' + tilt.y + 'deg) scale3d(1.03,1.03,1.03)'
+    : 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
 
   return (
-    <div className="relative z-[1] min-h-screen pt-[72px]">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden opacity-40">
-        <motion.div
-          animate={{ x: [0, 70, 0], y: [0, -45, 0], scale: [1, 1.08, 1] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute left-[6%] top-[12%] h-[320px] w-[320px] rounded-full bg-sky-400/20 blur-[90px]"
+    <div
+      ref={ref}
+      className={styles.tiltOuter + ' ' + (visible ? styles.tiltVisible : '')}
+      style={{ transitionDelay: (index % 2) * 100 + 'ms' }}
+    >
+      <div
+        ref={cardRef}
+        className={styles.tiltCard}
+        style={{ transform: transform, transition: hovered ? 'transform 0.1s ease' : 'transform 0.5s ease' }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={function() { setHovered(true); }}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Glare effect */}
+        <div
+          className={styles.tiltGlare}
+          style={{
+            opacity: hovered ? 0.12 : 0,
+            background: 'radial-gradient(circle at ' + (50 + tilt.y * 3) + '% ' + (50 + tilt.x * 3) + '%, rgba(200,168,107,0.8), transparent 70%)',
+          }}
+          aria-hidden="true"
         />
-        <motion.div
-          animate={{ x: [0, -60, 0], y: [0, 50, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-[8%] right-[8%] h-[360px] w-[360px] rounded-full bg-emerald-400/20 blur-[100px]"
-        />
-      </div>
 
-      <div className="relative py-16 pb-8">
-        <div className="mx-auto max-w-[1280px] px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="rounded-[24px] border border-white/[0.14] bg-gradient-to-br from-white/[0.11] via-white/[0.06] to-white/[0.03] p-9 text-center shadow-[0_18px_44px_rgba(0,0,0,0.25)]"
-          >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.16] bg-white/[0.05] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-[#c9d5e7]">
-              Executive Academic Panel
-            </div>
-            <h1 className="text-[clamp(2.2rem,4.5vw,3.3rem)] font-[900] tracking-[-0.04em] text-transparent bg-gradient-to-r from-[#e2e8f0] via-[#bae6fd] to-[#99f6e4] bg-clip-text">
-              Mentors
-            </h1>
-          </motion.div>
-        </div>
-      </div>
-
-      <section className="py-8 pb-20">
-        <div className="mx-auto max-w-[1280px] px-6">
-          <div className="mb-7 flex items-center justify-center gap-2 rounded-[16px] border border-white/[0.10] bg-white/[0.03] py-3">
-            <Crown className="text-[#cbd5e1]" size={28} />
-            <h2 className="text-[2rem] font-[850] tracking-[-0.03em]">Chief Mentor</h2>
-          </div>
-
-          <MentorCard mentor={featuredMentor} index={0} featured />
-
-          <div className="mb-7 mt-14 flex items-center justify-center gap-2 rounded-[16px] border border-white/[0.10] bg-white/[0.03] py-3">
-            <ShieldCheck className="text-[#7dd3fc]" size={26} />
-            <h2 className="text-[2rem] font-[850] tracking-[-0.03em]">Senior Mentors</h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {supportingMentors.map((mentor, i) => (
-              <MentorCard key={mentor.name} mentor={mentor} index={i + 1} />
-            ))}
+        <div className={styles.tiltLeft}>
+          <div className={styles.tiltPhotoWrap}>
+            {mentor.image
+              ? React.createElement('img', { src: mentor.image, alt: 'Photo of ' + mentor.name, loading: 'lazy' })
+              : React.createElement('div', { className: styles.tiltInitials }, mentor.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0, 2))
+            }
+            <div className={styles.tiltPhotoShine} aria-hidden="true" />
           </div>
         </div>
-      </section>
+
+        <div className={styles.tiltRight}>
+          <div className={styles.tiltRoleRow}>
+            <span className={styles.tiltRole}>{mentor.role}</span>
+            <div className={styles.tiltRoleLine} aria-hidden="true" />
+          </div>
+          <h3 className={styles.tiltName}>{mentor.name}</h3>
+          <p className={styles.tiltTitle}>{mentor.title}</p>
+          <p className={styles.tiltDept}>{mentor.dept}</p>
+          <p className={styles.tiltInst}>{mentor.inst}</p>
+          <div className={styles.tiltLinks}>
+            {Object.keys(mentor.links).map(function(key) {
+              return React.createElement(
+                'a',
+                {
+                  key: key,
+                  href: mentor.links[key],
+                  className: styles.tiltLink,
+                  target: key !== 'email' ? '_blank' : undefined,
+                  rel: key !== 'email' ? 'noopener noreferrer' : undefined,
+                  'aria-label': LINK_LABELS[key] + ' of ' + mentor.name,
+                },
+                LINK_ICONS[key],
+                LINK_LABELS[key]
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 3D depth border glow */}
+        <div className={styles.tiltBorderGlow} aria-hidden="true" />
+      </div>
     </div>
   );
 }
 
-export default Mentors;
+export default function Mentors() {
+  const [chiefVisible, setChiefVisible] = useState(false);
+  const chiefRef = useRef(null);
+
+  useEffect(function() {
+    const obs = new IntersectionObserver(
+      function(entries) {
+        if (entries[0].isIntersecting) {
+          setChiefVisible(true);
+          obs.unobserve(entries[0].target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (chiefRef.current) obs.observe(chiefRef.current);
+    return function() { obs.disconnect(); };
+  }, []);
+
+  return (
+    React.createElement('main', { id: 'main-content' },
+
+      // PAGE HERO
+      React.createElement('div', { className: 'page-hero' },
+        React.createElement('img', { src: UNSPLASH.researchBg, alt: '', className: 'page-hero-img', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-overlay', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-dots', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-content' },
+          React.createElement('span', { className: 'eyebrow' }, 'Executive Academic Panel'),
+          React.createElement('h1', { className: 'page-hero-title' },
+            React.createElement('em', null, 'Mentors')
+          )
+        )
+      ),
+
+      // CHIEF MENTOR
+      React.createElement('section', { 'aria-label': 'Chief Mentor', className: styles.chiefSection },
+        React.createElement('div', { className: styles.chiefSectionHeader },
+          React.createElement('h2', { className: styles.chiefSectionTitle }, 'Chief Mentor'),
+          React.createElement('span', { className: styles.chiefBadge }, 'Leadership'),
+          React.createElement('div', { className: styles.chiefHeaderLine, 'aria-hidden': true })
+        ),
+
+        React.createElement('div', {
+          ref: chiefRef,
+          className: styles.chiefCard + ' ' + (chiefVisible ? styles.chiefVisible : ''),
+        },
+          // Animated corner accents
+          React.createElement('div', { className: styles.cornerTL, 'aria-hidden': true }),
+          React.createElement('div', { className: styles.cornerTR, 'aria-hidden': true }),
+          React.createElement('div', { className: styles.cornerBL, 'aria-hidden': true }),
+          React.createElement('div', { className: styles.cornerBR, 'aria-hidden': true }),
+
+          React.createElement('div', { className: styles.chiefPhotoCol },
+            React.createElement('div', { className: styles.chiefPhotoFrame },
+              CHIEF.image
+                ? React.createElement('img', { src: CHIEF.image, alt: 'Photo of ' + CHIEF.name, loading: 'lazy' })
+                : React.createElement('div', { className: styles.chiefInitials }, 'SA'),
+              React.createElement('div', { className: styles.chiefPhotoGlow, 'aria-hidden': true }),
+              // Floating ring decoration
+              React.createElement('div', { className: styles.chiefRing, 'aria-hidden': true },
+                React.createElement('svg', { viewBox: '0 0 120 120', fill: 'none' },
+                  React.createElement('circle', { cx: '60', cy: '60', r: '55', stroke: 'rgba(200,168,107,0.25)', strokeWidth: '1', strokeDasharray: '4 6' }),
+                  React.createElement('circle', { cx: '60', cy: '60', r: '42', stroke: 'rgba(200,168,107,0.15)', strokeWidth: '0.8' })
+                )
+              )
+            )
+          ),
+
+          React.createElement('div', { className: styles.chiefInfo },
+            React.createElement('div', { className: styles.chiefRoleRow },
+              React.createElement('span', { className: styles.chiefRole }, CHIEF.role),
+              React.createElement('div', { className: styles.chiefRoleDash, 'aria-hidden': true })
+            ),
+            React.createElement('h2', { className: styles.chiefName }, CHIEF.name),
+            React.createElement('div', { className: styles.chiefOrg },
+              CHIEF.org.map(function(line, i) {
+                return React.createElement('p', { key: i, className: i === 0 ? styles.chiefOrgPrimary : styles.chiefOrgSecondary }, line);
+              })
+            ),
+            React.createElement('div', { className: styles.chiefDivider, 'aria-hidden': true }),
+            React.createElement('p', { className: styles.chiefBio }, CHIEF.bio),
+            React.createElement('div', { className: styles.chiefLinks },
+              Object.keys(CHIEF.links).map(function(key) {
+                return React.createElement(
+                  'a',
+                  {
+                    key: key,
+                    href: CHIEF.links[key],
+                    className: styles.chiefLink,
+                    target: key !== 'email' ? '_blank' : undefined,
+                    rel: key !== 'email' ? 'noopener noreferrer' : undefined,
+                    'aria-label': LINK_LABELS[key] + ' of ' + CHIEF.name,
+                  },
+                  LINK_ICONS[key],
+                  LINK_LABELS[key]
+                );
+              })
+            )
+          )
+        )
+      ),
+
+      // SENIOR MENTORS
+      React.createElement('section', { 'aria-label': 'Senior Mentors', className: styles.seniorSection },
+        React.createElement('div', { className: styles.seniorSectionHeader },
+          React.createElement('h2', { className: styles.seniorSectionTitle }, 'Senior Mentors'),
+          React.createElement('span', { className: styles.seniorBadge }, 'Academic Panel'),
+          React.createElement('div', { className: styles.seniorHeaderLine, 'aria-hidden': true })
+        ),
+        React.createElement('div', { className: styles.seniorGrid },
+          SENIOR.map(function(mentor, i) {
+            return React.createElement(TiltCard, { key: mentor.name, mentor: mentor, index: i });
+          })
+        )
+      ),
+
+      React.createElement(Footer, null)
+    )
+  );
+}

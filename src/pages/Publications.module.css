@@ -1,0 +1,20 @@
+.filterBar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 3.5rem; }
+.filter {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.14em;
+  padding: 7px 16px; border: 1px solid rgba(255,255,255,0.1); background: transparent;
+  color: rgba(255,255,255,0.48); cursor: pointer; text-transform: uppercase;
+  transition: all 0.15s; font-weight: 400;
+}
+.filter:hover { border-color: rgba(200,168,107,0.4); color: var(--gold); }
+.filterOn { background: var(--gold); color: var(--slate-abs); border-color: var(--gold); }
+.yearGroup { margin-bottom: 3.5rem; }
+.yearNum {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 8vw, 68px); font-weight: 700;
+  color: rgba(200,168,107,0.09); line-height: 1; letter-spacing: -0.03em; margin-bottom: 0.5rem;
+}
+.pubItem {
+  display: grid; grid-template-columns: 2px 1fr; gap: 1.75rem;
+  padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.08); align-items: start;
+}
+.pubItem:first-of-type { border-top: 2px solid var(--gold); }
+.empty { color: var(--text-muted); font-size: 14px; padding: 2rem 0; }

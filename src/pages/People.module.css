@@ -1,0 +1,255 @@
+/* ── TABS ── */
+.tabs {
+  background: var(--slate-abs); border-bottom: 1px solid rgba(255,255,255,0.1);
+  position: sticky; top: 60px; z-index: 100;
+  display: flex; flex-wrap: wrap;
+  padding: 0 clamp(1.25rem, 5vw, 4rem);
+}
+.tab {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.16em;
+  padding: 1rem 1.25rem; border: none; border-bottom: 2px solid transparent;
+  background: transparent; cursor: pointer; color: rgba(255,255,255,0.42);
+  text-transform: uppercase; transition: color 0.2s, border-color 0.2s;
+}
+.tab:hover { color: var(--white); border-bottom-color: rgba(200,168,107,0.45); }
+.tab:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+/* ── BG VARIANTS ── */
+.normBg { background: var(--slate-deep); }
+.altBg  { background: var(--slate-abs); }
+
+/* ── DIRECTOR ── */
+.dirLabel {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 5vw, 4rem) 0;
+}
+.dirLabelLine {
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, rgba(200,168,107,0.4), transparent);
+}
+.dirBlock {
+  display: grid; grid-template-columns: clamp(260px, 30vw, 380px) 1fr;
+  min-height: 520px; border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.dirPhotoWrap {
+  position: relative; overflow: hidden;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.dirPhotoWrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  filter: saturate(0.78) brightness(0.86);
+  transition: transform 0.6s ease, filter 0.4s;
+}
+.dirPhotoWrap:hover img { transform: scale(1.03); filter: saturate(0.92) brightness(0.94); }
+.dirPhotoOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 55%, var(--slate-deep) 100%);
+}
+.dirInitials {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 300;
+  color: rgba(200,168,107,0.5); background: var(--slate-md);
+}
+.dirContent {
+  padding: clamp(2.5rem, 4vw, 4rem) clamp(2rem, 4vw, 4rem);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.dirTopRow {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+.dirDeco { flex-shrink: 0; margin-top: 0.25rem; opacity: 0.75; }
+.dirRole {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.22em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.dirName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 500;
+  color: var(--white); line-height: 1.1; margin-bottom: 0.35rem;
+}
+.dirJoined {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.3); text-transform: uppercase;
+}
+.dirRule { width: 40px; height: 1.5px; background: var(--gold); margin: 1.5rem 0; }
+.dirBio {
+  font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.9;
+  max-width: 620px; margin-bottom: 2rem;
+}
+.dirLinks { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+.dirLink {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.14em;
+  padding: 8px 18px; border: 1px solid rgba(200,168,107,0.35);
+  color: var(--gold); text-decoration: none; text-transform: uppercase;
+  transition: all 0.2s; background: transparent;
+}
+.dirLink:hover { background: var(--gold); color: var(--slate-abs); }
+.dirLink:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ── SECTION HEADER ── */
+.segHeader {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: clamp(2rem, 3vw, 3rem) clamp(1.25rem, 5vw, 4rem) clamp(1rem, 2vw, 1.5rem);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.segTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 3vw, 34px); font-weight: 400; color: var(--white);
+}
+.segBadge {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.2em;
+  padding: 3px 12px; border: 1px solid rgba(200,168,107,0.35); color: var(--gold);
+  text-transform: uppercase;
+}
+.segCount {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.22); text-transform: uppercase; margin-left: auto;
+}
+
+/* ── CARD GRID — auto-fill so it breathes at any width ── */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1.5px;
+  background: rgba(255,255,255,0.07);
+  padding-bottom: 1.5px;
+}
+
+/* ── FLIP OUTER — scroll reveal ── */
+.flipOuter {
+  perspective: 1100px; cursor: pointer;
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+  /* min-height drives the grid row — tall enough for both front and back */
+  min-height: 360px;
+}
+.flipVisible { opacity: 1; transform: none; }
+
+.flipInner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.62s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.flipped { transform: rotateY(180deg); }
+
+.flipFront, .flipBack {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+.flipBack { transform: rotateY(180deg); }
+
+/* FRONT */
+.flipFront {
+  background: var(--slate-deep);
+  display: flex; flex-direction: column;
+}
+.cardPhoto {
+  position: relative; flex: 1; overflow: hidden; min-height: 230px;
+}
+.cardPhoto img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  filter: saturate(0.7) brightness(0.82);
+  transition: transform 0.45s ease, filter 0.3s;
+}
+.flipOuter:hover .cardPhoto img {
+  transform: scale(1.06); filter: saturate(0.88) brightness(0.9);
+}
+.cardInitials {
+  width: 100%; height: 100%; min-height: 230px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300;
+  color: rgba(200,168,107,0.55); background: var(--slate-md);
+  letter-spacing: 0.1em;
+}
+.cardGradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(19,30,40,0.94) 0%, rgba(19,30,40,0.08) 50%, transparent 100%);
+}
+.cardHint {
+  position: absolute; bottom: 0.7rem; right: 0.7rem;
+  font-family: 'Cinzel', serif; font-size: 7px; letter-spacing: 0.14em;
+  color: rgba(200,168,107,0.55); text-transform: uppercase;
+  background: rgba(13,20,28,0.55); padding: 3px 8px; border-radius: 1px;
+  opacity: 0; transition: opacity 0.25s;
+}
+.flipOuter:hover .cardHint { opacity: 1; }
+.cardFrontInfo {
+  padding: 0.9rem 1.1rem 1.1rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: var(--slate-deep);
+}
+.cardRole {
+  font-family: 'Cinzel', serif; font-size: 7.5px; letter-spacing: 0.18em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 0.3rem; line-height: 1.4;
+}
+.cardSubRole { color: rgba(200,168,107,0.6); }
+.cardName {
+  font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 500;
+  color: var(--white); line-height: 1.2; margin-bottom: 0.2rem;
+}
+.cardJoined {
+  font-family: 'Cinzel', serif; font-size: 7px; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.25); text-transform: uppercase;
+}
+
+/* BACK */
+.flipBack {
+  background: var(--slate-md);
+  display: flex; flex-direction: column;
+  border-left: 2px solid var(--gold);
+}
+.backScroll {
+  flex: 1; padding: 1.25rem 1.25rem 0.75rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200,168,107,0.25) transparent;
+}
+.backScroll::-webkit-scrollbar { width: 3px; }
+.backScroll::-webkit-scrollbar-thumb { background: rgba(200,168,107,0.25); border-radius: 2px; }
+.cardNameBack {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500;
+  color: var(--white); line-height: 1.2; margin-bottom: 0.2rem; margin-top: 0.3rem;
+}
+.backBio {
+  font-size: 11.5px; color: rgba(255,255,255,0.7); line-height: 1.78;
+  margin-top: 0.65rem; margin-bottom: 1rem;
+}
+.backLinks {
+  display: flex; gap: 5px; flex-wrap: wrap; padding-bottom: 0.5rem;
+}
+.backLink {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'Cinzel', serif; font-size: 7.5px; letter-spacing: 0.1em;
+  padding: 5px 11px; border: 1px solid rgba(200,168,107,0.32);
+  color: var(--gold); text-decoration: none; text-transform: uppercase;
+  transition: all 0.15s; background: transparent;
+}
+.backLink:hover { background: var(--gold); color: var(--slate-abs); }
+.backLink svg { flex-shrink: 0; }
+.backCloseHint {
+  padding: 0.55rem 1.25rem;
+  font-family: 'Cinzel', serif; font-size: 7px; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.22); text-transform: uppercase; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .dirBlock { grid-template-columns: 1fr; min-height: auto; }
+  .dirPhotoWrap { min-height: 340px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .dirPhotoOverlay { background: linear-gradient(to top, var(--slate-deep) 0%, transparent 55%); }
+  .cardGrid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+}
+@media (max-width: 600px) {
+  .tab { padding: 0.75rem 0.8rem; font-size: 8px; letter-spacing: 0.1em; }
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
+  .segCount { display: none; }
+}
+@media (max-width: 360px) {
+  .cardGrid { grid-template-columns: 1fr; }
+}

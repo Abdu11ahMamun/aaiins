@@ -1,0 +1,23 @@
+.lead { font-size: 16px; color: var(--text); max-width: 640px; line-height: 1.85; margin-bottom: 1.5rem; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: rgba(255,255,255,0.1); margin-top: 2rem; }
+.card {
+  background: var(--slate-deep); padding: clamp(1.75rem,3vw,2.75rem) clamp(1.5rem,3vw,2.5rem);
+  position: relative; overflow: hidden; transition: background 0.3s;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+}
+.card:hover { background: var(--slate-md); }
+.card:hover::before { transform: scaleX(1); }
+.cardNum {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(44px,6vw,60px); font-weight: 700;
+  color: rgba(200,168,107,0.09); line-height: 1; letter-spacing: -0.03em; margin-bottom: 0.75rem;
+}
+.cardTitle { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px,2.5vw,24px); font-weight: 500; color: var(--white); margin-bottom: 0.75rem; }
+.cardBody { font-size: 13px; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.25rem; }
+.cardTag {
+  display: inline-block; font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.18em;
+  padding: 3px 12px; border: 1px solid rgba(200,168,107,0.3); color: var(--gold); text-transform: uppercase;
+}
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }

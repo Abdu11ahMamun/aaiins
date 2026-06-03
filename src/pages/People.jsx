@@ -8,6 +8,20 @@ import styles from './People.module.css';
 const imageMap = import.meta.glob('../assets/*', { eager: true, import: 'default' });
 const getImage = (fileName) => imageMap[`../assets/${fileName}`] || null;
 
+const MENTORS_CHIEF = {
+  name: 'Professor Sami Azam',
+  role: 'Chief Mentor',
+  org: ['Discipline Chair, Information Technology', 'Faculty of Science and Technology', 'Charles Darwin University, Australia'],
+  bio: 'Professor Sami Azam leads the academic panel for AAIINS Lab, providing strategic research direction and mentorship. His expertise spans applied AI, computer vision, and intelligent systems, with over 120 international publications and a deep commitment to nurturing the next generation of AI researchers worldwide.',
+  image: getImage('sami-azam_0-removebg-preview-e1757102988261.png'),
+  links: { email: 'mailto:sami.azam@cdu.edu.au', scholar: 'https://www.scopus.com/authid/detail.uri?authorId=54894635100', website: 'https://researchers.cdu.edu.au/en/persons/sami-azam' },
+};
+
+const MENTORS_SENIOR = [
+  { name: 'Mohaimenul Azam Khan Raiaan', role: 'Senior Mentor', title: 'PhD Student', dept: 'Department of Data Science and AI', inst: 'Monash University, Australia', image: getImage('mak-raian.jpg'), links: { email: 'mailto:mohaimenul.raiaan@monash.edu', linkedin: 'https://www.linkedin.com/in/makraiaan/', scholar: 'https://scholar.google.com/citations?view_op=list_works&hl=en&user=Gg4yXLoAAAAJ', website: 'https://mak-raiaan.github.io/' } },
+  { name: 'Sadia Sultana Chowa', role: 'Senior Mentor', title: 'PhD Student', dept: 'Department of Software Systems & Cybersecurity', inst: 'Monash University, Australia', image: getImage('Chowa-scaled.jpg'), links: { email: 'mailto:sadia15-3052@diu.edu.bd', linkedin: 'https://www.linkedin.com/in/sadia-sultana-chowa-/', scholar: 'https://scholar.google.com/citations?user=JKcqHrMAAAAJ&hl=en', website: 'https://sultana-chowa.github.io/' } },
+];
+
 const director = {
   name: 'Nur Mohammad Fahad',
   role: 'Director',
@@ -441,7 +455,69 @@ function FlipCard({ person, index }) {
     </div>
   );
 }
+function TiltCard({ mentor, index }) {
+  const [visible, setVisible] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef(null);
+  const cardRef = useRef(null);
 
+  useEffect(function() {
+    const obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { setVisible(true); obs.unobserve(entries[0].target); }
+    }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return function() { obs.disconnect(); };
+  }, []);
+
+  function onMove(e) {
+    const card = cardRef.current;
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    setTilt({ x: ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -8, y: ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 8 });
+  }
+
+  return (
+    <div ref={ref} className={styles.tiltOuter + ' ' + (visible ? styles.tiltVisible : '')} style={{ transitionDelay: index * 110 + 'ms' }}>
+      <div
+        ref={cardRef}
+        className={styles.tiltCard}
+        style={{
+          transform: hovered ? 'perspective(900px) rotateX(' + tilt.x + 'deg) rotateY(' + tilt.y + 'deg) scale3d(1.025,1.025,1.025)' : 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)',
+          transition: hovered ? 'transform 0.12s ease, box-shadow 0.3s' : 'transform 0.55s ease, box-shadow 0.3s',
+        }}
+        onMouseMove={onMove}
+        onMouseEnter={function() { setHovered(true); }}
+        onMouseLeave={function() { setTilt({ x: 0, y: 0 }); setHovered(false); }}
+      >
+        <div className={styles.tiltAccent} aria-hidden="true" />
+        <div className={styles.tCTL} aria-hidden="true" />
+        <div className={styles.tCBR} aria-hidden="true" />
+        <div className={styles.tiltGlare} style={{ opacity: hovered ? 0.1 : 0, background: 'radial-gradient(circle at ' + (50 + tilt.y * 4) + '% ' + (50 + tilt.x * 4) + '%, rgba(200,168,107,0.9), transparent 65%)' }} aria-hidden="true" />
+        <div className={styles.tiltPhotoWrap}>
+          {mentor.image ? React.createElement('img', { src: mentor.image, alt: 'Photo of ' + mentor.name, loading: 'lazy' }) : React.createElement('div', { className: styles.tiltInitials }, mentor.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0, 2))}
+          <div className={styles.tiltShine} aria-hidden="true" />
+        </div>
+        <div className={styles.tiltInfo}>
+          <div className={styles.tiltRoleRow}>
+            <span className={styles.tiltRole}>{mentor.role}</span>
+            <div className={styles.tiltRoleLine} aria-hidden="true" />
+          </div>
+          <h3 className={styles.tiltName}>{mentor.name}</h3>
+          {mentor.title && React.createElement('p', { className: styles.tiltTitle }, mentor.title)}
+          {mentor.dept && React.createElement('p', { className: styles.tiltDept }, mentor.dept)}
+          {mentor.inst && React.createElement('p', { className: styles.tiltInst }, mentor.inst)}
+          <div className={styles.tiltLinks}>
+            {Object.keys(mentor.links).map(function(key) {
+              return React.createElement('a', { key: key, href: mentor.links[key], className: styles.tiltLink, target: key !== 'email' ? '_blank' : undefined, rel: key !== 'email' ? 'noopener noreferrer' : undefined, 'aria-label': LINK_LABELS[key] + ' of ' + mentor.name }, LINK_ICONS[key], LINK_LABELS[key]);
+            })}
+          </div>
+        </div>
+        <div className={styles.tiltBorderGlow} aria-hidden="true" />
+      </div>
+    </div>
+  );
+}
 function PeopleSection({ id, title, badge, count, people, alt }) {
   return (
     <section id={id} aria-label={title} className={alt ? styles.altBg : styles.normBg}>
@@ -460,6 +536,17 @@ function PeopleSection({ id, title, badge, count, people, alt }) {
 }
 
 export default function People() {
+  const [chiefVisible, setChiefVisible] = useState(false);
+  const chiefRef = useRef(null);
+
+  useEffect(function() {
+    const obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { setChiefVisible(true); obs.unobserve(entries[0].target); }
+    }, { threshold: 0.1 });
+    if (chiefRef.current) obs.observe(chiefRef.current);
+    return function() { obs.disconnect(); };
+  }, []);
+
   function scrollTo(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -478,99 +565,121 @@ export default function People() {
         </div>
       </div>
 
+      {/* STICKY TABS */}
       <nav className={styles.tabs} aria-label="Jump to team section">
         {[
-          { id: 'director',   label: 'Director' },
-          { id: 'associates', label: 'Associate Directors' },
+          { id: 'mentors',    label: 'Mentors' },
+          { id: 'leadership', label: 'Leadership' },
           { id: 'graduate',   label: 'Graduate Researchers' },
           { id: 'undergrad',  label: 'Undergraduates' },
         ].map(function(t) {
           return (
-            <button
-              key={t.id}
-              className={styles.tab}
-              onClick={function() { scrollTo(t.id); }}
-            >
+            <button key={t.id} className={styles.tab} onClick={function() { scrollTo(t.id); }}>
               {t.label}
             </button>
           );
         })}
       </nav>
 
-      {/* DIRECTOR */}
-      <section id="director" aria-label="Director" className={styles.normBg}>
-        <div className={styles.dirLabel}>
-          <span className="eyebrow" style={{ marginBottom: 0 }}>Leadership</span>
-          <span className={styles.dirLabelLine} aria-hidden="true" />
+      {/* ── MENTORS — at top ── */}
+      <section id="mentors" aria-label="Mentors" className={styles.normBg}>
+        <div className={styles.segHeader}>
+          <h2 className={styles.segTitle}>Executive Academic Panel</h2>
+          <span className={styles.segBadge}>Mentors</span>
         </div>
-        <div className={styles.dirBlock}>
-          <div className={styles.dirPhotoWrap}>
-            {director.image
-              ? <img src={director.image} alt={'Photo of ' + director.name} loading="lazy" />
-              : <div className={styles.dirInitials}>NMF</div>
-            }
-            <div className={styles.dirPhotoOverlay} aria-hidden="true" />
-          </div>
-          <div className={styles.dirContent}>
-            <div className={styles.dirTopRow}>
-              <div>
-                <p className={styles.dirRole}>{director.role}</p>
-                <h2 className={styles.dirName}>{director.name}</h2>
-                {director.joined && <p className={styles.dirJoined}>{director.joined}</p>}
-              </div>
-              <div className={styles.dirDeco} aria-hidden="true">
-                <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                  <circle cx="28" cy="28" r="26" stroke="rgba(200,168,107,0.22)" strokeWidth="1"/>
-                  <circle cx="28" cy="28" r="16" stroke="rgba(200,168,107,0.14)" strokeWidth="1"/>
-                  <circle cx="28" cy="12" r="2.5" fill="rgba(200,168,107,0.5)"/>
-                  <circle cx="42" cy="36" r="2.5" fill="rgba(200,168,107,0.5)"/>
-                  <circle cx="14" cy="36" r="2.5" fill="rgba(200,168,107,0.5)"/>
-                  <line x1="28" y1="14.5" x2="41" y2="34" stroke="rgba(200,168,107,0.28)" strokeWidth="0.8"/>
-                  <line x1="28" y1="14.5" x2="15" y2="34" stroke="rgba(200,168,107,0.28)" strokeWidth="0.8"/>
-                  <line x1="15.5" y1="36" x2="40.5" y2="36" stroke="rgba(200,168,107,0.28)" strokeWidth="0.8"/>
-                </svg>
+
+        {/* Chief Mentor */}
+        <div className={styles.chiefWrap}>
+          <div ref={chiefRef} className={styles.chiefCard + ' ' + (chiefVisible ? styles.chiefVisible : '')}>
+            <div className={styles.cCTL} aria-hidden="true" />
+            <div className={styles.cCTR} aria-hidden="true" />
+            <div className={styles.cCBL} aria-hidden="true" />
+            <div className={styles.cCBR} aria-hidden="true" />
+            <div className={styles.chiefPhotoCol}>
+              <div className={styles.chiefPhotoFrame}>
+                {MENTORS_CHIEF.image
+                  ? <img src={MENTORS_CHIEF.image} alt={'Photo of ' + MENTORS_CHIEF.name} loading="lazy" />
+                  : <div className={styles.chiefInitials}>SA</div>
+                }
+                <div className={styles.chiefPhotoGlow} aria-hidden="true" />
+                <div className={styles.chiefRing} aria-hidden="true">
+                  <svg viewBox="0 0 120 120" fill="none">
+                    <circle cx="60" cy="60" r="55" stroke="rgba(200,168,107,0.25)" strokeWidth="1" strokeDasharray="4 6" />
+                    <circle cx="60" cy="60" r="42" stroke="rgba(200,168,107,0.15)" strokeWidth="0.8" />
+                  </svg>
+                </div>
               </div>
             </div>
-            <div className={styles.dirRule} />
-            <p className={styles.dirBio}>{director.bio}</p>
-            <div className={styles.dirLinks}>
-              {Object.keys(director.links).map(function (key) {
-                return (
-                  <LinkButton
-                    key={key}
-                    linkKey={key}
-                    href={director.links[key]}
-                    name={director.name}
-                    isDir={true}
-                  />
-                );
-              })}
+            <div className={styles.chiefInfo}>
+              <div className={styles.chiefRoleRow}>
+                <span className={styles.chiefRole}>{MENTORS_CHIEF.role}</span>
+                <div className={styles.chiefRoleDash} aria-hidden="true" />
+              </div>
+              <h2 className={styles.chiefName}>{MENTORS_CHIEF.name}</h2>
+              <div className={styles.chiefOrg}>
+                {MENTORS_CHIEF.org.map(function(line, i) {
+                  return <p key={i} className={i === 0 ? styles.chiefOrgP : styles.chiefOrgS}>{line}</p>;
+                })}
+              </div>
+              <div className={styles.chiefDivider} aria-hidden="true" />
+              <p className={styles.chiefBio}>{MENTORS_CHIEF.bio}</p>
+              <div className={styles.chiefLinks}>
+                {Object.keys(MENTORS_CHIEF.links).map(function(key) {
+                  return (
+                    <LinkButton key={key} linkKey={key} href={MENTORS_CHIEF.links[key]} name={MENTORS_CHIEF.name} isDir={true} />
+                  );
+                })}
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Senior Mentors */}
+        <div className={styles.seniorHeader}>
+          <span className="eyebrow" style={{ marginBottom: 0 }}>Senior Mentors</span>
+          <div className={styles.seniorHeaderLine} aria-hidden="true" />
+        </div>
+        <div className={styles.seniorGrid}>
+          {MENTORS_SENIOR.map(function(m, i) {
+            return <TiltCard key={m.name} mentor={m} index={i} />;
+          })}
         </div>
       </section>
 
-      <PeopleSection
-        id="associates"
-        title="Associate Directors"
-        badge="Senior Leadership"
-        count={associateDirectors.length}
-        people={associateDirectors}
-      />
+      {/* ── LEADERSHIP — Director + Associates unified flip grid ── */}
+      <section id="leadership" aria-label="Leadership" className={styles.altBg}>
+        <div className={styles.segHeader}>
+          <h2 className={styles.segTitle}>Leadership</h2>
+          <span className={styles.segBadge}>Director & Associates</span>
+          <span className={styles.segCount}>{1 + associateDirectors.length} members</span>
+        </div>
+        <div className={styles.cardGrid}>
+          {[
+            Object.assign({}, director, { role: 'Director', subRole: null }),
+            ...associateDirectors,
+          ].map(function(p, i) {
+            return <FlipCard key={i} person={p} index={i} />;
+          })}
+        </div>
+      </section>
+
+      {/* ── GRADUATE ── */}
       <PeopleSection
         id="graduate"
         title="Graduate Researchers"
         badge="PhD & Masters"
         count={graduateResearchers.length}
         people={graduateResearchers}
-        alt
       />
+
+      {/* ── UNDERGRAD ── */}
       <PeopleSection
         id="undergrad"
         title="Undergraduates"
         badge="Honours & Research"
         count={undergraduateResearchers.length}
         people={undergraduateResearchers}
+        alt
       />
 
       <div className="collab-cta" style={{ marginTop: 0 }}>
@@ -578,7 +687,7 @@ export default function People() {
         <p>We're always looking for brilliant, curious minds to push the frontier of AI research.</p>
         <div className="cta-buttons">
           <a href="mailto:aaiins.research@gmail.com" className="btn-primary">Get in Touch</a>
-          <Link to="/mentors" className="btn-outline">Meet Our Mentors</Link>
+          <Link to="/join" className="btn-outline">Apply Now</Link>
         </div>
       </div>
 

@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { LOGO, UNSPLASH } from '../data';
 import styles from './Home.module.css';
+const imageMap = import.meta.glob('../assets/*', { eager: true, import: 'default' });
+const getImage = (fn) => imageMap[`../assets/${fn}`] || null;
 
 // ── Intersection observer hook ──
 function useReveal(threshold) {
@@ -117,7 +119,15 @@ function ThemeCard({ area, index }) {
 // ── News card ──
 function NewsCard({ item, index }) {
   const [ref, visible] = useReveal(0.1);
-  const TAG_COLORS = { Funding: '#10b981', Award: '#facc15', Partnership: '#68a8ff', Conference: '#8b8cff', People: '#f43f5e', Milestone: '#36e1c6' };
+  const TAG_COLORS = {
+  Funding: '#10b981',
+  Award: '#facc15',
+  Partnership: '#68a8ff',
+  Conference: '#8b8cff',
+  People: '#f43f5e',
+  Milestone: '#36e1c6',
+  Publication: '#10b981',
+};
   const color = TAG_COLORS[item.tag] || '#c8a86b';
 
   return (
@@ -127,7 +137,9 @@ function NewsCard({ item, index }) {
       style: { transitionDelay: index * 100 + 'ms', '--n-color': color },
     },
       React.createElement('div', { className: styles.newsPhotoWrap },
-        React.createElement('img', { src: item.photo, alt: item.title, loading: 'lazy', className: styles.newsPhoto }),
+        item.photo
+      ? React.createElement('img', { src: item.photo, alt: item.title, loading: 'lazy', className: styles.newsPhoto })
+      : React.createElement('div', { className: styles.newsPhotoFallback }),
         React.createElement('div', { className: styles.newsPhotoOverlay, 'aria-hidden': true }),
         React.createElement('span', { className: styles.newsTagBadge, style: { background: color, color: '#131e28' } }, item.tag)
       ),
@@ -151,9 +163,27 @@ const THEMES = [
 ];
 
 const NEWS = [
-  { date: 'April 14, 2025', title: 'AAIINS Lab receives $2.4M ARC Discovery Grant for health AI research', excerpt: 'The lab has been awarded a competitive ARC Discovery grant to develop privacy-preserving federated learning systems for cross-institutional clinical data analysis.', photo: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80&fit=crop', tag: 'Funding' },
-  { date: 'February 28, 2025', title: 'Khan Raiaan wins Best Paper at ICCV 2025 for climate modelling work', excerpt: 'Congratulations to Senior Mentor Khan Raiaan, whose paper on generative satellite imagery synthesis was awarded Best Student Paper at ICCV.', photo: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80&fit=crop', tag: 'Award' },
-  { date: 'January 10, 2025', title: 'New partnership with Monash University School of Medicine announced', excerpt: 'AAIINS Lab and Monash Medicine have signed a formal research collaboration agreement to develop AI-assisted diagnostic tools for early cancer detection.', photo: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&q=80&fit=crop', tag: 'Partnership' },
+  {
+    date: '2025',
+    title: 'Nur Mohammad Fahad Receives Fully Funded PhD Scholarship at Murdoch University',
+    excerpt: 'Lab Director Nur Mohammad Fahad has been awarded a fully funded PhD scholarship at Murdoch University, Australia, to research intelligent and adaptive UAV systems using computer vision, optimisation, and AI.',
+    photo: getImage('IMG_20251020_030347.png'),
+    tag: 'Award',
+  },
+  {
+    date: '2025',
+    title: 'Mohaimenul Azam Khan Raiaan Begins PhD at Monash University',
+    excerpt: 'Senior Mentor Khan Raiaan has commenced his PhD in Data Science and AI at Monash University, conducting research at the NativeBee+ Tech Facility Lab under Professor Alan Dorin and Associate Professor Ehsan Abbasnejad.',
+    photo: getImage('mak-raian.jpg'),
+    tag: 'People',
+  },
+  {
+    date: 'January 6, 2026',
+    title: 'Review on LLMs as Autonomous Agents Published in Artificial Intelligence Review',
+    excerpt: 'A detailed review of LLMs as autonomous agents and tool users, examining 68 datasets and ten future research directions. Authors include Sadia Sultana Chowa, Riasad Alvi, Subhey Sadi Rahman, M. A. K. Raiaan, et al.',
+    photo: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80&fit=crop',
+    tag: 'Publication',
+  },
 ];
 
 export default function Home() {

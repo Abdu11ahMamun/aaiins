@@ -3,6 +3,7 @@ import React from 'react';
 import Footer from '../components/Footer';
 import { UNSPLASH } from '../data';
 import styles from './Join.module.css';
+import { sendApplicationEmail } from '../helpers/emailService';
 
 const BENEFITS = [
   {
@@ -204,6 +205,7 @@ function BenefitCard({ benefit, index }) {
 export default function Join() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [firstName, setFirstName] = useState('');
   const formRef = useRef(null);
 
@@ -221,13 +223,20 @@ export default function Join() {
     if (name === 'firstName') setFirstName(value);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(function() {
+    setSubmitError('');
+
+    const result = await sendApplicationEmail(form);
+
+    if (result.success) {
       setSubmitting(false);
       setSubmitted(true);
-    }, 1200);
+    } else {
+      setSubmitting(false);
+      setSubmitError(result.message);
+    }
   }
 
   return (
@@ -350,15 +359,16 @@ export default function Join() {
                     )
                   )
                 ),
-                React.createElement('div', { className: styles.formGroup, style: { gridColumn: '1 / -1' } },
-                  React.createElement('label', { htmlFor: 'statement', className: styles.label }, 'Personal Statement'),
-                  React.createElement('textarea', {
-                    id: 'statement', name: 'statement', rows: 5,
-                    className: styles.textarea, required: true,
-                    placeholder: 'Tell us about your research background, what motivates you to join AAIINS Lab, and what you hope to contribute and achieve...',
-                    value: form.statement, onChange: handleChange,
-                  })
-                ),
+               React.createElement('div', { className: styles.formGroup, style: { gridColumn: '1 / -1' } },
+                 React.createElement('label', { htmlFor: 'statement', className: styles.label }, 'Personal Statement'),
+                 React.createElement('textarea', {
+                   id: 'statement', name: 'statement', rows: 5,
+                   className: styles.textarea, required: true,
+                   placeholder: 'Tell us about your research background, what motivates you to join AAIINS Lab, and what you hope to contribute and achieve...',
+                   value: form.statement, onChange: handleChange,
+                 })
+               ),
+                submitError && React.createElement('p', { className: styles.formError }, submitError),
                 React.createElement('button', {
                   type: 'submit',
                   className: styles.submitBtn + ' ' + (submitting ? styles.submitBtnLoading : ''),

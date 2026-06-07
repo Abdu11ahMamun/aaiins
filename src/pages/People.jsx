@@ -626,16 +626,6 @@ function PeopleSection({ id, title, badge, count, people, alt }) {
 }
 
 export default function People() {
-  const [chiefVisible, setChiefVisible] = useState(false);
-  const chiefRef = useRef(null);
-
-  useEffect(function() {
-    const obs = new IntersectionObserver(function(entries) {
-      if (entries[0].isIntersecting) { setChiefVisible(true); obs.unobserve(entries[0].target); }
-    }, { threshold: 0.1 });
-    if (chiefRef.current) obs.observe(chiefRef.current);
-    return function() { obs.disconnect(); };
-  }, []);
 
   function scrollTo(id) {
     const el = document.getElementById(id);
@@ -658,7 +648,6 @@ export default function People() {
       {/* STICKY TABS */}
       <nav className={styles.tabs} aria-label="Jump to team section">
         {[
-          { id: 'mentors',    label: 'Mentors' },
           { id: 'leadership', label: 'Leadership' },
           { id: 'graduate',   label: 'Graduate Researchers' },
           { id: 'undergrad',  label: 'Undergraduates' },
@@ -671,84 +660,56 @@ export default function People() {
         })}
       </nav>
 
-      {/* ── MENTORS — at top ── */}
-      <section id="mentors" aria-label="Mentors" className={styles.normBg}>
-        <div className={styles.segHeader}>
-          <h2 className={styles.segTitle}>Executive Academic Panel</h2>
-          <span className={styles.segBadge}>Mentors</span>
-        </div>
 
-        {/* Chief Mentor */}
-        <div className={styles.chiefWrap}>
-          <div ref={chiefRef} className={styles.chiefCard + ' ' + (chiefVisible ? styles.chiefVisible : '')}>
-            <div className={styles.cCTL} aria-hidden="true" />
-            <div className={styles.cCTR} aria-hidden="true" />
-            <div className={styles.cCBL} aria-hidden="true" />
-            <div className={styles.cCBR} aria-hidden="true" />
-            <div className={styles.chiefPhotoCol}>
-              <div className={styles.chiefPhotoFrame}>
-                {MENTORS_CHIEF.image
-                  ? <img src={MENTORS_CHIEF.image} alt={'Photo of ' + MENTORS_CHIEF.name} loading="lazy" />
-                  : <div className={styles.chiefInitials}>SA</div>
-                }
-                <div className={styles.chiefPhotoGlow} aria-hidden="true" />
-                <div className={styles.chiefRing} aria-hidden="true">
-                  <svg viewBox="0 0 120 120" fill="none">
-                    <circle cx="60" cy="60" r="55" stroke="rgba(200,168,107,0.25)" strokeWidth="1" strokeDasharray="4 6" />
-                    <circle cx="60" cy="60" r="42" stroke="rgba(200,168,107,0.15)" strokeWidth="0.8" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div className={styles.chiefInfo}>
-              <div className={styles.chiefRoleRow}>
-                <span className={styles.chiefRole}>{MENTORS_CHIEF.role}</span>
-                <div className={styles.chiefRoleDash} aria-hidden="true" />
-              </div>
-              <h2 className={styles.chiefName}>{MENTORS_CHIEF.name}</h2>
-              <div className={styles.chiefOrg}>
-                {MENTORS_CHIEF.org.map(function(line, i) {
-                  return <p key={i} className={i === 0 ? styles.chiefOrgP : styles.chiefOrgS}>{line}</p>;
-                })}
-              </div>
-              <div className={styles.chiefDivider} aria-hidden="true" />
-              <p className={styles.chiefBio}>{MENTORS_CHIEF.bio}</p>
-              <div className={styles.chiefLinks}>
-                {Object.keys(MENTORS_CHIEF.links).map(function(key) {
-                  return (
-                    <LinkButton key={key} linkKey={key} href={MENTORS_CHIEF.links[key]} name={MENTORS_CHIEF.name} isDir={true} />
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Senior Mentors */}
-        <div className={styles.seniorHeader}>
-          <span className="eyebrow" style={{ marginBottom: 0 }}>Senior Mentors</span>
-          <div className={styles.seniorHeaderLine} aria-hidden="true" />
-        </div>
-        <div className={styles.seniorGrid}>
-          {MENTORS_SENIOR.map(function(m, i) {
-            return <TiltCard key={m.name} mentor={m} index={i} />;
-          })}
-        </div>
-      </section>
-
-      {/* ── LEADERSHIP — Director + Associates unified flip grid ── */}
-      <section id="leadership" aria-label="Leadership" className={styles.altBg}>
+   {/* ── LEADERSHIP — Mentors + Director + Associates unified ── */}
+      <section id="leadership" aria-label="Leadership" className={styles.normBg}>
         <div className={styles.segHeader}>
           <h2 className={styles.segTitle}>Leadership</h2>
-          <span className={styles.segBadge}>Director & Associates</span>
-          <span className={styles.segCount}>{1 + associateDirectors.length} members</span>
+          <span className={styles.segBadge}>Mentors, Director & Associates</span>
+          <span className={styles.segCount}>{2 + 1 + associateDirectors.length} members</span>
         </div>
         <div className={styles.cardGrid}>
-          {[
-            Object.assign({}, director, { role: 'Director', subRole: null }),
-            ...associateDirectors,
-          ].map(function(p, i) {
-            return <FlipCard key={i} person={p} index={i} />;
+       
+          {/* Director */}
+          <FlipCard
+            key="director"
+            person={Object.assign({}, director, { role: 'Director', subRole: null })}
+            index={3}
+          />
+          {/* Associate Directors */}
+          {associateDirectors.map(function (p, i) {
+            return <FlipCard key={p.name} person={p} index={i + 4} />;
+          })}
+
+             {/* Chief Mentor as flip card */}
+          <FlipCard
+            key="chief"
+            person={{
+              name: MENTORS_CHIEF.name,
+              role: MENTORS_CHIEF.role,
+              joined: 'Charles Darwin University, Australia',
+              bio: MENTORS_CHIEF.bio,
+              image: MENTORS_CHIEF.image,
+              links: MENTORS_CHIEF.links,
+            }}
+            index={0}
+          />
+          {/* Senior Mentors as flip cards */}
+          {MENTORS_SENIOR.map(function (m, i) {
+            return (
+              <FlipCard
+                key={m.name}
+                person={{
+                  name: m.name,
+                  role: m.role,
+                  joined: m.inst,
+                  bio: m.bio,
+                  image: m.image,
+                  links: m.links,
+                }}
+                index={i + 1}
+              />
+            );
           })}
         </div>
       </section>

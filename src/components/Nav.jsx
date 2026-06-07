@@ -8,7 +8,7 @@ const LINKS = [
   { to: '/research', label: 'Research' },
   { to: '/publications', label: 'Publications' },
   { to: '/people', label: 'People' },
-  { to: '/mentors', label: 'Mentors' },
+  // { to: '/mentors', label: 'Mentors' },
   { to: '/news', label: 'Lab News' },
 ];
 

@@ -1,20 +1,90 @@
-.lead { font-size: 15px; color: var(--text); max-width: 600px; line-height: 1.85; margin-bottom: 1.5rem; }
-.newsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(255,255,255,0.08); margin-top: 1rem; }
-.newsCard { background: var(--slate-deep); overflow: hidden; transition: background 0.25s; }
-.newsCard:hover { background: var(--slate-md); }
-.newsPhoto { position: relative; overflow: hidden; aspect-ratio: 16/9; }
-.newsPhoto img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.65) brightness(0.75); transition: transform 0.4s, filter 0.3s; }
-.newsCard:hover .newsPhoto img { transform: scale(1.05); filter: saturate(0.85) brightness(0.88); }
-.newsTag {
-  position: absolute; top: 1rem; left: 1rem;
-  font-family: 'Cinzel', serif; font-size: 7px; letter-spacing: 0.16em;
-  padding: 3px 10px; background: var(--gold); color: var(--slate-abs); text-transform: uppercase; font-weight: 600;
+/* ── SECTION ── */
+.section {
+  padding: clamp(3rem,5vw,5rem) clamp(1.25rem,5vw,4rem);
+  background: var(--slate-abs);
 }
-.newsBody { padding: 1.5rem 1.75rem; }
-.newsDate { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.6rem; }
-.newsTitle { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 500; color: var(--white); line-height: 1.3; margin-bottom: 0.65rem; }
-.newsExcerpt { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
-.newsRead { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.12em; color: var(--gold); text-decoration: none; text-transform: uppercase; transition: opacity 0.2s; }
-.newsRead:hover { opacity: 0.7; }
-@media (max-width: 900px) { .newsGrid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 600px) { .newsGrid { grid-template-columns: 1fr; } }
+.sectionInner { max-width: 1080px; margin: 0 auto; }
+.sectionHead { margin-bottom: 3rem; }
+.sectionTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px,3.5vw,40px); font-weight: 400;
+  color: var(--white); line-height: 1.12; margin-bottom: 1.25rem;
+}
+.sectionTitle em { font-style: italic; color: var(--gold-lt); }
+.lead { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.85; max-width: 600px; }
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--slate-dk);
+  border: 1px solid rgba(255,255,255,0.07);
+  overflow: hidden; display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease, border-color 0.25s, box-shadow 0.3s;
+}
+.cardVisible { opacity: 1; transform: none; }
+.card:hover {
+  border-color: rgba(200,168,107,0.18);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.35);
+}
+
+/* photo */
+.photoWrap {
+  position: relative; overflow: hidden;
+  aspect-ratio: 16/9;
+}
+.photo {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(0.65) brightness(0.78);
+  transition: transform 0.45s ease, filter 0.3s;
+}
+.card:hover .photo { transform: scale(1.05); filter: saturate(0.85) brightness(0.9); }
+.photoFallback {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--slate-md), var(--slate-dk));
+}
+.photoOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(19,30,40,0.7) 0%, transparent 60%);
+}
+.tag {
+  position: absolute; top: 0.85rem; left: 0.85rem;
+  font-family: 'Cinzel', serif; font-size: 7px; letter-spacing: 0.16em;
+  padding: 3px 10px; font-weight: 600; text-transform: uppercase;
+}
+
+/* body */
+.body { padding: 1.4rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.date {
+  font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.14em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 0.55rem;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500;
+  color: var(--white); line-height: 1.3; margin-bottom: 0.65rem;
+}
+.excerpt {
+  font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.75;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden; margin-bottom: 0.85rem; flex: 1;
+}
+.meta { margin-bottom: 1rem; }
+.authors {
+  font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.5;
+  margin-bottom: 0.2rem; font-style: italic;
+}
+.journal {
+  font-size: 11px; color: var(--gold); opacity: 0.7; line-height: 1.4;
+}
+.footer { display: flex; align-items: center; gap: 0.75rem; margin-top: auto; }
+.footerLine { flex: 1; height: 1px; max-width: 40px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }

@@ -1,57 +1,167 @@
-import Reveal from '../components/Reveal';
+import React from 'react';
 import Footer from '../components/Footer';
-import { UNSPLASH, NEWS } from '../data';
+import { UNSPLASH } from '../data';
 import styles from './News.module.css';
 
-const EXTRA_NEWS = [
-  { date: 'December 5, 2024', title: 'AAIINS researcher presents at NeurIPS 2024 in Vancouver', excerpt: 'PhD student Layla Hassan presented her work on multimodal transformers for clinical prediction at the main NeurIPS conference, drawing significant attention from leading AI labs.', photo: UNSPLASH.newsB, tag: 'Conference' },
-  { date: 'October 22, 2024', title: 'New undergraduate intake: 8 honours students join the lab', excerpt: 'We warmly welcome our 2024 honours cohort. These eight exceptional students will be working across all research domains, from health AI to generative models.', photo: UNSPLASH.newsC, tag: 'People' },
-  { date: 'August 14, 2024', title: 'AAIINS Lab officially registered as an international research network', excerpt: 'After two years of growth, AAIINS Lab has formally registered as an international AI research network, with members across 12 countries on 5 continents.', photo: UNSPLASH.newsA, tag: 'Milestone' },
+const imageMap = import.meta.glob('../assets/*', { eager: true, import: 'default' });
+const getImage = (fn) => imageMap[`../assets/${fn}`] || null;
+
+const ALL_NEWS = [
+  {
+    date: 'June 2025',
+    title: 'HANS-Net Published in IEEE Transactions on Radiation and Plasma Medical Sciences',
+    excerpt: 'HANS-Net combines hyperbolic convolution and adaptive temporal attention for liver and tumor segmentation in CT imaging, achieving a mean Dice score of 93.26% on the LiTS dataset.',
+    photo: UNSPLASH.researchBg,
+    tag: 'Publication',
+    authors: 'A. I. Abian, R. K. Debnath, M. A. Rahman, et al.',
+    journal: 'IEEE Transactions on Radiation and Plasma Medical Sciences',
+  },
+  {
+    date: 'May 2025',
+    title: 'Gastrointestinal Disease Classification Research Published in Engineering Applications of AI',
+    excerpt: 'The ASPPST model combines Atrous Spatial Pyramid Pooling with Swin Transformer to classify 30 gastrointestinal disease categories from endoscopic videos, achieving 97.49% accuracy with Grad-CAM explainability.',
+    photo: UNSPLASH.aboutA,
+    tag: 'Publication',
+    authors: 'A. I. Abian, M. A. K. Raiaan, M. Jonkman, S. M. S. Islam, S. Azam',
+    journal: 'Engineering Applications of Artificial Intelligence',
+  },
+  {
+    date: 'April 2025',
+    title: 'New Review on Fact-Checking and Factuality in Large Language Models',
+    excerpt: 'A comprehensive review of hallucination and factuality evaluation in LLMs, covering retrieval-augmented generation, instruction tuning, and multi-agent reasoning across research published 2020–2025.',
+    photo: UNSPLASH.strip,
+    tag: 'Publication',
+    authors: 'S. S. Rahman, M. A. Islam, M. M. Alam, et al.',
+    journal: 'Artificial Intelligence Review',
+  },
+  {
+    date: 'March 2025',
+    title: 'Multimodal Framework for Musculoskeletal Risk Classification in Athletes Submitted',
+    excerpt: 'The ViSK-GAT framework combines visual and skeletal-coordinate data with fine-grained attention to assess musculoskeletal risk, achieving over 93% across classification measures on the MusDis-Sports dataset.',
+    photo: UNSPLASH.peopleBg,
+    tag: 'Research',
+    authors: 'M. A. Rahman, M. A. K. Raiaan, T. Shermin, et al.',
+    journal: 'Expert Systems with Applications (Under Review)',
+  },
+  {
+    date: 'January 6, 2026',
+    title: 'Review on LLMs as Autonomous Agents Published in Artificial Intelligence Review',
+    excerpt: 'A detailed review of LLMs as autonomous agents and tool users, examining 68 datasets, single and multi-agent systems, and ten future research directions for reliable and accountable AI.',
+    photo: UNSPLASH.heroBg,
+    tag: 'Publication',
+    authors: 'Sadia Sultana Chowa, Riasad Alvi, Subhey Sadi Rahman, Md Abdur Rahman, M. A. K. Raiaan, et al.',
+    journal: 'Artificial Intelligence Review',
+  },
+  {
+    date: '2025',
+    title: 'Mohaimenul Azam Khan Raiaan Begins PhD at Monash University',
+    excerpt: 'Senior Mentor Khan Raiaan has commenced his PhD in Data Science and Artificial Intelligence at Monash University, conducting research at the NativeBee+ Tech Facility Lab under Professor Alan Dorin and Associate Professor Ehsan Abbasnejad.',
+    photo: getImage('mak-raian.jpg'),
+    tag: 'People',
+    authors: 'Mohaimenul Azam Khan Raiaan',
+    journal: 'Monash University, Melbourne, Australia',
+  },
+  {
+    date: '2025',
+    title: 'Nur Mohammad Fahad Receives Fully Funded PhD Scholarship at Murdoch University',
+    excerpt: 'Lab Director Nur Mohammad Fahad has been awarded a fully funded PhD scholarship at Murdoch University, Australia, to research intelligent and adaptive UAV systems using computer vision, optimisation, and AI.',
+    photo: getImage('IMG_20251020_030347.png'),
+    tag: 'Award',
+    authors: 'Nur Mohammad Fahad',
+    journal: 'Murdoch University, Australia',
+  },
 ];
 
-const ALL_NEWS = [...NEWS, ...EXTRA_NEWS];
+const TAG_COLORS = {
+  Publication: '#10b981',
+  Research: '#68a8ff',
+  People: '#8b8cff',
+  Award: '#facc15',
+  Conference: '#f43f5e',
+  Milestone: '#36e1c6',
+};
+
+function NewsCard({ item, index }) {
+  const [visible, setVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(function() {
+    const obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { setVisible(true); obs.unobserve(entries[0].target); }
+    }, { threshold: 0.08 });
+    if (ref.current) obs.observe(ref.current);
+    return function() { obs.disconnect(); };
+  }, []);
+
+  const color = TAG_COLORS[item.tag] || '#c8a86b';
+
+  return (
+    React.createElement('article', {
+      ref: ref,
+      className: styles.card + ' ' + (visible ? styles.cardVisible : ''),
+      style: { transitionDelay: (index % 3) * 90 + 'ms', '--n-color': color },
+    },
+      React.createElement('div', { className: styles.photoWrap },
+        item.photo
+          ? React.createElement('img', { src: item.photo, alt: item.title, loading: 'lazy', className: styles.photo })
+          : React.createElement('div', { className: styles.photoFallback }),
+        React.createElement('div', { className: styles.photoOverlay, 'aria-hidden': true }),
+        React.createElement('span', {
+          className: styles.tag,
+          style: { background: color, color: '#131e28' },
+        }, item.tag)
+      ),
+      React.createElement('div', { className: styles.body },
+        React.createElement('p', { className: styles.date }, item.date),
+        React.createElement('h2', { className: styles.title }, item.title),
+        React.createElement('p', { className: styles.excerpt }, item.excerpt),
+        React.createElement('div', { className: styles.meta },
+          React.createElement('p', { className: styles.authors }, item.authors),
+          item.journal && React.createElement('p', { className: styles.journal }, item.journal)
+        ),
+        React.createElement('div', { className: styles.footer },
+          React.createElement('div', { className: styles.footerLine, style: { background: color }, 'aria-hidden': true }),
+        )
+      )
+    )
+  );
+}
 
 export default function News() {
   return (
-    <main id="main-content">
-      <div className="page-hero">
-        <img src={UNSPLASH.peopleBg} alt="" className="page-hero-img" aria-hidden="true"/>
-        <div className="page-hero-overlay" aria-hidden="true"/>
-        <div className="page-hero-dots" aria-hidden="true"/>
-        <div className="page-hero-content">
-          <span className="eyebrow">Stay Updated</span>
-          <h1 className="page-hero-title">Lab <em>News</em></h1>
-        </div>
-      </div>
+    React.createElement('main', { id: 'main-content' },
 
-      <section className="section-wrap" aria-label="Lab news articles">
-        <div className="section-inner">
-          <Reveal>
-            <p className={styles.lead}>The latest milestones, publications, awards, and updates from AAIINS Lab and our global research community.</p>
-            <div className="gold-rule"/>
-          </Reveal>
-          <div className={styles.newsGrid}>
-            {ALL_NEWS.map((item, i) => (
-              <Reveal key={i} delay={i % 3 + 1}>
-                <article className={styles.newsCard}>
-                  <div className={styles.newsPhoto}>
-                    <img src={item.photo} alt={item.title} loading="lazy"/>
-                    <span className={styles.newsTag}>{item.tag}</span>
-                  </div>
-                  <div className={styles.newsBody}>
-                    <p className={styles.newsDate}>{item.date}</p>
-                    <h2 className={styles.newsTitle}>{item.title}</h2>
-                    <p className={styles.newsExcerpt}>{item.excerpt}</p>
-                    <a href="#" className={styles.newsRead} aria-label={`Read more about: ${item.title}`}>Read more →</a>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      React.createElement('div', { className: 'page-hero' },
+        React.createElement('img', { src: UNSPLASH.peopleBg, alt: '', className: 'page-hero-img', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-overlay', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-dots', 'aria-hidden': true }),
+        React.createElement('div', { className: 'page-hero-content' },
+          React.createElement('span', { className: 'eyebrow' }, 'Stay Updated'),
+          React.createElement('h1', { className: 'page-hero-title' }, 'Lab ', React.createElement('em', null, 'News'))
+        )
+      ),
 
-      <Footer/>
-    </main>
+      React.createElement('section', { className: styles.section, 'aria-label': 'Lab news articles' },
+        React.createElement('div', { className: styles.sectionInner },
+          React.createElement('div', { className: styles.sectionHead },
+            React.createElement('span', { className: 'eyebrow' }, 'Latest Updates'),
+            React.createElement('h2', { className: styles.sectionTitle },
+              'News from ', React.createElement('em', null, 'the lab')
+            ),
+            React.createElement('div', { className: 'gold-rule' }),
+            React.createElement('p', { className: styles.lead },
+              'The latest milestones, publications, awards, and updates from AAIINS Lab and our global research community.'
+            )
+          ),
+          React.createElement('div', { className: styles.grid },
+            ALL_NEWS.map(function(item, i) {
+              return React.createElement(NewsCard, { key: i, item: item, index: i });
+            })
+          )
+        )
+      ),
+
+      React.createElement(Footer, null)
+    )
   );
 }

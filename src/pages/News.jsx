@@ -55,7 +55,7 @@ const ALL_NEWS = [
   {
     date: '2025',
     title: 'Mohaimenul Azam Khan Raiaan Begins PhD at Monash University',
-    excerpt: 'Senior Mentor Khan Raiaan has commenced his PhD in Data Science and Artificial Intelligence at Monash University, conducting research at the NativeBee+ Tech Facility Lab under Professor Alan Dorin and Associate Professor Ehsan Abbasnejad.',
+    excerpt: 'Senior Mentor Khan Raiaan has commenced his PhD in Data Science and Artificial Intelligence at Monash University, supported by the Monash Graduate Scholarship and the Monash International Tuition Scholarship',
     photo: getImage('mak-raian.jpg'),
     tag: 'People',
     authors: 'Mohaimenul Azam Khan Raiaan',

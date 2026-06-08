@@ -186,18 +186,6 @@ const graduateResearchers = [
     },
   },
   {
-    name: 'Delwar Shahadat Deepu',
-    joined: 'Joined December 2024',
-    bio: "Md Delwar Shahadat Deepu is a Lecturer at Shanto-Mariam University of Creative Technology and a recent graduate of United International University. He is also an active researcher specializing in Artificial Intelligence, with primary interests in Machine Learning, Deep Learning, and Computer Vision. He is committed to exploring novel methods and making significant contributions to these fields, successfully balancing his academic and research responsibilities. His goal is to advance the practical applications of AI and make a significant and meaningful impact.",
-    image: getImage('Deepu.jpg'),
-    links: {
-      email: 'mailto:mdeepu202037@bscse.uiu.ac.bd',
-      linkedin: 'https://www.linkedin.com/in/delwar-shahadat',
-      scholar: 'https://scholar.google.com/citations?user=-fWfGKgAAAAJ&hl=en',
-      website: 'https://portfolio-deepu.vercel.app/',
-    },
-  },
-  {
     name: 'Fatiha Binta Masud',
     joined: 'Joined January 2025',
     bio: "Fatiha Binta Masud is currently affiliated with Tutorsplan Technology Limited as an Associate Technical Product Manager. She is an emerging researcher with interests in Computer Vision, Deep Learning, and Medical Image Analysis. Her focus is on developing intelligent and explainable imaging models that support healthcare applications and clinical decision-making. She is passionate about interdisciplinary research that connects technology with medical science, aiming to create innovative and practical solutions that improve diagnostic accuracy.",
@@ -207,28 +195,6 @@ const graduateResearchers = [
       linkedin: 'https://www.linkedin.com/in/fatihasubha/',
       scholar: 'https://scholar.google.com/citations?user=k1PBR1IAAAAJ&hl=en',
       website: 'https://sites.google.com/view/fatiha-binta-masud',
-    },
-  },
-  {
-    name: 'Shahil Yasar Haque',
-    joined: 'Joined June 2024',
-    bio: "Shahil Yasar Haque is a part-time lecturer at United International University, where his research and teaching span both computational and biological domains. With a solid academic foundation in data science, he brings a unique multidisciplinary perspective to his work. His primary academic interests include large language models, computer vision, and bioinformatics. He is particularly focused on the strategic integration of artificial intelligence techniques to facilitate data interpretation and analysis, with a core emphasis on fostering data-driven discovery.",
-    image: getImage('shahil.jpg'),
-    links: {
-      email: 'mailto:shaque201021@bscse.uiu.ac.bd',
-      linkedin: 'https://www.linkedin.com/in/shahil-yasar-haque-aa0093228/',
-      scholar: 'https://scholar.google.com/citations?user=KL27QD8AAAAJ&hl=en',
-    },
-  },
-  {
-    name: 'Eashrat Jahan',
-    joined: 'Joined June 2024',
-    bio: "Eashrat Jahan is currently working as a Lecturer in the Department of Computer Science and Engineering at Shanto-Mariam University of Creative Technology. She earned her Bachelor of Science degree in Computer Science and Engineering in 2024. Her academic and research interests encompass Bioinformatics, Digital Image Processing, and Human Computer Interaction. She is aspiring to pursue doctoral studies at a highly reputed university. She is passionate about contributing to innovative research that bridges technology and human well-being.",
-    image: getImage('eashrat.jpg'),
-    links: {
-      email: 'mailto:ejahan201165@bscse.uiu.ac.bd',
-      linkedin: 'https://www.linkedin.com/in/eashrat-jahan-7126841b1/',
-      scholar: 'https://scholar.google.com/citations?user=kRgoIoQAAAAJ&hl=en',
     },
   },
   {
@@ -254,17 +220,16 @@ const graduateResearchers = [
     },
   },
   {
-    name: 'Sayeem Been Zaman',
-    joined: 'Joined December 2023',
-    bio: "Sayeem Been Zaman is a Computer Science and Engineering graduate from United International University (UIU), Bangladesh, where he completed his degree with Summa Cum Laude distinction. He has two years of experience as an Undergraduate Teaching Assistant at UIU. He is currently engaged in collaborative research in the field of 3D medical imaging, diffusion-based generative models, multimodal deep learning, and bioinformatics applications. He has already compiled a few works and continues his dedication to produce more impactful research.",
-    image: getImage('sayeem.jpg'),
-    links: {
-      email: 'mailto:szaman211088@bscse.uiu.ac.bd',
-      linkedin: 'https://www.linkedin.com/in/sayeemzzzaman/',
-      scholar: 'https://scholar.google.com/citations?user=7lpZmdsAAAAJ&hl=en',
-      website: 'https://sayeemzzzaman.github.io/',
-    },
+  name: 'Soykot Podder',
+  joined: 'Joined January 2026',
+  bio: 'Soykot Podder is a Machine Learning Engineer with expertise in Machine Learning, Deep Learning, and Computer Vision. Awarded the 100% SII Scholarship in 2021 for his M.Tech at Indian Institute of Information Technology Design and Manufacturing Jabalpur, he builds scalable AI systems for object detection, image classification, and real-time vision applications. Skilled in Python, Django, FastAPI, and end-to-end ML pipelines, Soykot develops high-performance models and integrates them into production.',
+  image: getImage('Soykot Podder.jpeg'),
+  links: {
+    email: 'mailto:diptopodder95@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/soykot-podder-424684146/',
+    website: 'https://protfolio-soykot.vercel.app',
   },
+}
 ];
 
 const undergraduateResearchers = [
@@ -322,13 +287,15 @@ const undergraduateResearchers = [
     },
   },
   {
-    name: 'Abhishek Nag',
-    joined: 'Joined November 2024',
-    bio: "Abhishek Nag is currently pursuing his studies in the Department of Mathematics at Shahjalal University of Science and Technology. He has a keen interest in the field of deep learning and is actively engaged in research related to wildfire prediction. His work primarily focuses on applying advanced deep learning techniques to train predictive models that can forecast the spread and behavior of wildfires. With a strong mathematical foundation, Abhishek is committed to research that integrates theoretical understanding with practical implementations.",
-    image: getImage('Abhishek-Nag.jpg'),
-    links: {
-      email: 'mailto:nagabhishek248@gmail.com',
-    },
+  name: 'Md Alif Abdullah Ibne Ezaz',
+  joined: 'Joined January 2026',
+  bio: 'Md Alif Abdullah Ibne Ezaz is an undergraduate student in Computing and Information System, majoring in Artificial Intelligence at Daffodil International University. His academic training includes data structures, algorithms, object-oriented programming, database systems, and software engineering. His research interests focus on deep learning, computer vision, and natural language processing, with an emphasis on developing scalable, efficient AI models for healthcare and data-driven real-world applications.',
+  image: getImage('Alif Abdullah.jpeg'),
+  links: {
+    email: 'mailto:ezaz2312091019@diu.edu.bd',
+    linkedin: 'https://www.linkedin.com/in/alif-abdullah-',
+    scholar: 'https://scholar.google.com/citations?user=s0VeZTwAAAAJ&hl=en',
+   },
   },
 ];
 
